@@ -1,4 +1,5 @@
-%
+% Project 1 - Week 1 Deliverables
+% Nikhil Agarwal, Derek Chan, Christopher Chou
 
 % Part 1:
 % Writing the predicate definition
