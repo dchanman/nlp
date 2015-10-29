@@ -30,8 +30,8 @@ word_line_morphs() :- read_word(CharArray), morph_tokens_bag(w(CharArray), Bag),
 % from the user and split it into a character list.
 %
 % This code was mostly taken from Steve Wolfman's 312-pess-grammar.pl
-read_word([]) :- peek_char(Ch), Ch = ' ', !.
-read_word([]) :- peek_char(Ch), Ch = '.', !.
+read_word([]) :- peek_char(Ch), Ch = ' ', !, get_char(_).
+read_word([]) :- peek_char(Ch), Ch = '.', !, get_char(_).
+read_word([]) :- peek_char(Ch), Ch = '\n', !, get_char(_).
 read_word([]) :- peek_char(Ch), Ch = 'end_of_file', !.
-read_word([]) :- peek_char(Ch), Ch = '\n', !.
 read_word([Ch|Chs]) :- get_char(Ch), read_word(Chs).
