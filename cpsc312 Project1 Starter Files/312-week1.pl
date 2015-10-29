@@ -8,8 +8,8 @@
 %	wn_g.pl: This contains all the definitions for all of WordNet's words (WordNet's glossary)
 % 
 % Import the modules with the following: 
-% 	[wordnet_prolog_2007/wn_s].
-% 	[wordnet_prolog_2007/wn_g].
+:- consult('wordnet_prolog_2007/wn_s.pl').
+:- consult('wordnet_prolog_2007/wn_g.pl').
 
 definition(Word, Meaning) :- 
 	s(Synset_id, _, Word, _, _, _), % Get the Synset_id from s
@@ -22,7 +22,7 @@ definition(Word, Meaning) :-
 % morphological phrasings.
 % 
 % Import ProNTo_Morph with the following:
-% 	[pronto_morph_engine].
+:- consult('pronto_morph_engine.pl').
 
 word_line_morphs() :- read_word(CharArray), morph_tokens_bag(w(CharArray), Bag), write(Bag).
 
