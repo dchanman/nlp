@@ -536,7 +536,7 @@ gloss_all([]) --> [].
 gloss_all([Attr|Attrs]) --> gloss(Attr), gloss_all(Attrs).
 
 % Gloss a list of attributes, putting "ands" between as necessary.
-% (Ands are used between every pair b/c there's no punctuation!)
+% (Ands are used between every pair bc there's no punctuation!)
 gloss_all_and([]) --> [].
 gloss_all_and([Attr]) --> gloss(Attr).
 gloss_all_and([Attr1,Attr2|Attrs]) --> 
@@ -568,6 +568,43 @@ split_attrs([attr(NonTarget, Val, Subs)|Rest],
 % more effectively.
 write_sentence([]).
 write_sentence([Word|Words]) :- write(Word), tab(1), write_sentence(Words).
+
+%%%%%
+%Parse Vocabulary
+%%%%%
+%Entry point
+
+vocab(Words) -->
+    vocab_phrase_conj(Words).
+
+conjunction --> [and].
+conjunction --> []. % This one's a blank
+
+%Turns a single sentence composed of multiple phrases into a list of
+%vocabulary atoms.
+
+vocab_phrase_conj(Types) -->
+    vocab_phrase(First), conjunction,
+    vocab_phrase_conj(Rest),
+    { Types = [First|Rest] }. % Accumulative recursive case.
+vocab_phrase_conj(Types) -->
+    vocab_phrase(Type),
+    { Types = [Type|[]] }. % Base case.
+
+% Turn a single sentencephrase into a vocabulary atom.
+
+vocab_phrase(Word) -->
+    [Head, Type], 
+    { type(Type, Head, Word) }.
+vocab_phrase(Word) -->
+    [Head], vis, det_opt, [Type], 
+    { type(Type, Head, Word) }.
+
+
+
+type(noun, X, n(X)).
+type(verb, X, v(X)).
+type(adjective, X, adj(X)).
 
 
 
