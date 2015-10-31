@@ -572,24 +572,23 @@ write_sentence([Word|Words]) :- write(Word), tab(1), write_sentence(Words).
 %%%%%
 %Parse Vocabulary
 %%%%%
-conjunction --> [and].	%if a line of words is separated by 'and'
-conjunction --> []. % This one's a blank
 
-sentence1([]). %base case. Empty like our souls.
+sentence1(Words) --> sentencePhrase(Words).
 
-sentence1([Word, Type]) --> [Word], vis, det_opt, wordType(Type). %This deals with 'is' 'is a' and so on. vis refers to line 367 det_opt refers to line 312 and 333-337
+	
+sentencePhrase(Phrase) --> sentenceAtom(First), and, sentencePhrase(Rest), {Phrase = [First|Rest]}. %recursive. 'and' deals with how lines are seperated. Either by a 'and' or blank.
+sentencePhrase(Phrase) --> sentenceAtom(Type), {Phrase = [Type|[]]}. % Base case empty like our soul.
 
-% this deals with if 'and' exists or not to conjoin multiple phrases. conjuction should and both 'and' and a blank.
-sentence1([Word, Word2|Type]) --> [Word], wordType(Word2), conjunction, sentence1(Type).
-sentence1([Word, Word2]) --> [Word], wordType(Word2).
-sentence1([Word,Word2|Type]) --> [Word], vis, det_opt, wordType(Word2), sentence1(Type).
-
-
-
-wordType(n) --> [noun].	%the following are the various types.
-wordType(v) --> [verb].
-wordType(adj) --> [adjective].
-wordType(adv) --> [adverb].
+% phrases to atoms.
+sentenceAtom(Word) --> [Head, Type], {wordType(Type, Head, Word)}. % this is a case of just a word and a 'attribute' 
+sentenceAtom(Word) --> [Head], vis, det_opt, [Type], {wordType(Type, Head, Word)}. %This deals with 'is' 'is a' and so on. vis refers to line 367 det_opt refers to line 312 and 333-337
+	
+and --> [and]. %if a line of words is separated by 'and'
+and --> []. %This one's a blank
+wordType(noun, X, n(X)). %following are the various 'attributes' a word can have
+wordType(verb, X, v(X)). %X is Head, the first word of a phrase. e.g. v(X) asserts v(lift)
+wordType(adjective, X, adj(X)).
+wordType(adverb, X, adv(X)).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Vocabulary for the PESS parser                               %%
