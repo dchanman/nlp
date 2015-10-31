@@ -1,5 +1,5 @@
 % Project 1 - Week 1 Deliverables
-% Nikhil Agarwal, Derek Chan, Christopher Chou
+% Nikhil Agarwal(53835138), Derek Chan(33184128), Christopher Chou(35592120)
 
 % Part 1:
 % Writing the predicate definition
@@ -38,36 +38,13 @@ read_word([]) :- peek_char(Ch), Ch = 'end_of_file', !.
 read_word([Ch|Chs]) :- get_char(Ch), read_word(Chs).
 
 <<<<<<< Updated upstream
-Part 3:
-
-from 312-pess.pl
-process(['words:'|L]) :-    % Process Vocabularies
-		vocab(R,L,[]),		% Parse the rule.
-		bug(R),				% Print it for debugging
-		assert_rules(R), !.	% Assert it (them, potentially) in the DB.
-		
-from 312-pess-grammar.pl
-
-%%%%%
-%Parse Vocabulary
-%%%%%
-
-sentence1([]). %base case. Empty like our souls.
-
-sentence1([Word, Type]) --> [Word], vis, det_opt, wordType(Type). %This deals with 'is' 'is a' and so on. vis refers to line 367 det_opt refers to line 312 and 333-337
-
-% this deals with if 'and' exists or not to conjoin multiple phrases. conjuction should and both 'and' and a blank.
-sentence1([Word, Word2|Type]) --> [Word], wordType(Word2), conjunction, sentence1(Type).
-sentence1([Word, Word2]) --> [Word], wordType(Word2).
 
 
+% Part 3:
+% This question is in 312-pess.pl starting on line 352 
+% and updated grammar is in 312-pess-grammar.pl starting on line 572
 
-conjunction --> [and].	%if a line of words is separated by 'and'
-conjunction --> []. % This one's a blank
-wordType(n) --> [noun].	%the following are the various types.
-wordType(v) --> [verb].
-wordType(adj) --> [adjective].
-wordType(adv) --> [adverb].		
+
 
 % Part 4:
 % Simplifying a goal
