@@ -572,41 +572,25 @@ write_sentence([Word|Words]) :- write(Word), tab(1), write_sentence(Words).
 %%%%%
 %Parse Vocabulary
 %%%%%
-%Entry point
 
-vocab(Words) -->
-    vocab_phrase_conj(Words).
+sentence1([]). %base case. Empty like our souls.
 
-conjunction --> [and].
+%This deals with 'is' 'is a' and so on. vis refers to line 367 det_opt refers to line 312 and 333-337
+sentence1([Word, Type]) --> [Word], vis, det_opt, wordType(Type).
+
+
+% this deals with if 'and' exists or not to conjoin multiple phrases. conjuction should and both 'and' and a blank.
+sentence_1([Word, Word2|Type]) --> [Word], wordType(Word2), conjunction, sentence_1(Type).
+sentence_1([Word, Word2]) --> [Word], wordType(Word2).
+
+
+
+conjunction --> [and].	%if a line of words is separated by 'and'
 conjunction --> []. % This one's a blank
-
-%Turns a single sentence composed of multiple phrases into a list of
-%vocabulary atoms.
-
-vocab_phrase_conj(Types) -->
-    vocab_phrase(First), conjunction,
-    vocab_phrase_conj(Rest),
-    { Types = [First|Rest] }. % Accumulative recursive case.
-vocab_phrase_conj(Types) -->
-    vocab_phrase(Type),
-    { Types = [Type|[]] }. % Base case.
-
-% Turn a single sentencephrase into a vocabulary atom.
-
-vocab_phrase(Word) -->
-    [Head, Type], 
-    { type(Type, Head, Word) }.
-vocab_phrase(Word) -->
-    [Head], vis, det_opt, [Type], 
-    { type(Type, Head, Word) }.
-
-
-
-type(noun, X, n(X)).
-type(verb, X, v(X)).
-type(adjective, X, adj(X)).
-
-
+wordType(n) --> [noun].
+wordType(v) --> [verb].
+wordType(adj) --> [adjective].
+wordType(adv) --> [adverb].
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Vocabulary for the PESS parser                               %%
