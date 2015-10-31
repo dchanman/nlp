@@ -37,6 +37,7 @@ read_word([]) :- peek_char(Ch), Ch = '\n', !, get_char(_).
 read_word([]) :- peek_char(Ch), Ch = 'end_of_file', !.
 read_word([Ch|Chs]) :- get_char(Ch), read_word(Chs).
 
+<<<<<<< Updated upstream
 Part 3:
 
 from 312-pess.pl
@@ -67,3 +68,27 @@ wordType(n) --> [noun].	%the following are the various types.
 wordType(v) --> [verb].
 wordType(adj) --> [adjective].
 wordType(adv) --> [adverb].		
+
+% Part 4:
+% Simplifying a goal
+simplify_list([],[]).
+simplify_list([H|T],[H1|T1]) :- simplify_attr(H,H1),simplify_list(T,T1).
+
+simplify_attr(A,SimpleA) :- functor(A,attr,2), arg(2,A,[]), !, arg(1,A,X), SimpleA = X.
+
+simplify_attr(A,SimpleA) :- functor(A,attr,2), arg(2,A,[Z]), !, functor(SimpleA,attr,2), arg(1,A,X),
+	arg(1,SimpleA,X), arg(2,SimpleA,Z1), simplify_attr(Z,Z1).
+	
+simplify_attr(A,SimpleA) :- functor(A,attr,3), arg(3,A,[]), !, functor(Dummy,attr,2), arg(1,A,X), arg(2,A,Y),
+	functor(W,X,1), arg(1,W,Y), arg(1,Dummy,W), arg(2,Dummy,[]), simplify_attr(Dummy,SimpleA).
+
+simplify_attr(A,SimpleA)  :- functor(A,attr,3), not(arg(3,A,[])), !, functor(SimpleA,attr,2), arg(1,A,X), arg(2,A,Y),
+	functor(W,X,1), arg(1,W,Y), arg(1,SimpleA,W), arg(3,A,Z), arg(2,SimpleA,Z1), simplify_list(Z,Z1).
+	
+simplify_attr(A,SimpleA) :- functor(A,rule,2), arg(2,A,[]), !, functor(SimpleA,fact,1), arg(1,A,H), simplify_attr(H,H1),
+	arg(1,SimpleA,H1).
+
+simplify_attr(A,SimpleA) :- functor(A,rule,2), arg(2,A,[B]), !, functor(SimpleA,rule,2), arg(1,A,H), simplify_attr(H,H1),
+	arg(1,SimpleA,H1), simplify_attr(B,B1), arg(2,SimpleA,B1).
+
+
