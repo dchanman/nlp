@@ -350,7 +350,7 @@ process(['rule:'|L]) :-     % Found a rule.
         bug(R),             % Print it for debugging.
         assert_rules(R), !. % Assert it (them, potentially) in the DB.
 process(['words:'|L]) :-    % Process Vocabularies
-		sentence1(R,L,[]),		% Parse the rule.
+		sentence1(R,L,[]),		% Parse the sentence.
 		bug(R),				% Print it for debugging
 		assert_rules(R), !.	% Assert it (them, potentially) in the DB.
 process(L) :-

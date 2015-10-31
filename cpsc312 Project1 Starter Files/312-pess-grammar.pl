@@ -579,18 +579,17 @@ sentence1([]). %base case. Empty like our souls.
 
 sentence1([Word, Type]) --> [Word], vis, det_opt, wordType(Type). %This deals with 'is' 'is a' and so on. vis refers to line 367 det_opt refers to line 312 and 333-337
 
-% this deals with if 'and' exists or not to conjoin multiple phrases. conjunction should and both 'and' and a blank.
-sentence1([Word, Word2| Type]) --> [Word], wordType(Word2), conjunction, sentence1(Type).
+% this deals with if 'and' exists or not to conjoin multiple phrases. conjuction should and both 'and' and a blank.
+sentence1([Word, Word2|Type]) --> [Word], wordType(Word2), conjunction, sentence1(Type).
 sentence1([Word, Word2]) --> [Word], wordType(Word2).
+sentence1([Word,Word2|Type]) --> [Word], vis, det_opt, wordType(Word2), sentence1(Type).
 
-sentence1([Word,Word2| Type]) --> [Word], vis, det_opt, wordType(Word2), sentence1(Type).
 
 
 wordType(n) --> [noun].	%the following are the various types.
 wordType(v) --> [verb].
 wordType(adj) --> [adjective].
 wordType(adv) --> [adverb].
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Vocabulary for the PESS parser                               %%
