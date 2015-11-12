@@ -1,0 +1,65 @@
+rule:
+if   its "n:element" is "adj:grass" and
+     it has "adj:four" "n:legs" and
+     it is a "n:basic evolutionary form"
+then it is a "n:bulbasaur".
+
+rule:
+if   its "n:element" is "adj:grass" and
+     it has "adj:four" "n:legs" and
+     it is a "n:secondary evolutionary form"
+then it is an "n:ivysaur".
+
+rule:
+if   its "n:element" is "adj:grass" and
+     it has "adj:four" "n:legs" and
+     it is a "n:final evolutionary form"
+then it is a "n:venusaur".
+
+rule:
+if   its "n:element" is "adj:fire" and
+     it has "adj:two" "n:legs" and
+     it is a "n:basic evolutionary form"
+then it is a "n:charmander".
+
+rule:
+if   its "n:element" is "adj:fire" and
+     it has "adj:two" "n:legs" and
+     it is a "n:secondary evolutionary form"
+then it is an "n:charmeleon".
+
+rule:
+if   its "n:element" is "adj:fire" and
+     it has "adj:two" "n:legs" and
+     it is a "n:final evolutionary form"
+then it is a "n:charizard".
+
+rule:
+if   its "n:element" is "adj:water" and
+     it has "adj:two" "n:legs" and
+     it is a "n:basic evolutionary form"
+then it is a "n:squirtle".
+
+rule:
+if   its "n:element" is "adj:water" and
+     it has "adj:two" "n:legs" and
+     it is a "n:secondary evolutionary form"
+then it is an "n:wartortle".
+
+rule:
+if   its "n:element" is "adj:water" and
+     it has "adj:two" "n:legs" and
+     it is a "n:final evolutionary form"
+then it is a "n:blastoise".
+
+rule:
+if   its "n:element" is "adj:electric" and
+     it has "adj:two" "n:legs" and
+     it is a "n:basic evolutionary form"
+then it is an "n:pikachu".
+
+rule:
+if   its "n:element" is "adj:electric" and
+     it has "adj:two" "n:legs" and
+     it is a "n:final evolutionary form"
+then it is an "n:raichu".
