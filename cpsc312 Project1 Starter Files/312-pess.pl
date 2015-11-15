@@ -46,7 +46,37 @@
 %% Interpreter loop                                             %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%% TODO!! %%%%%%%%%%%%%%%%%%%%
+main :-
+greeting, 
+repeat, 
+write('> '), 
+read(X), 
+do(X), 
+X == quit.
+
+greeting :-
+write('This is the Native Prolog shell.'), nl, 
+write('Enter load. solve. help. or quit.'), nl.
+
+do(load) :- load_kb, !.
+
+load_kb :-
+write('Enter filename in single quotes, followed by a period: '), 
+read(F), 
+load_rules(F).
+
+do(solve) :- solve, !.
+
+do(help) :- 
+write('Type help. load. solve. or quit. at the prompt.'), nl, !.
+
+do(quit).
+
+do(X) :-
+write(X), 
+write('is not a legal command.'), nl, 
+fail.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Solving, asking, and proving                                 %%
@@ -350,7 +380,7 @@ process(['rule:'|L]) :-     % Found a rule.
         bug(R),             % Print it for debugging.
         assert_rules(R), !. % Assert it (them, potentially) in the DB.
 process(['words:'|L]) :-    % Process Vocabularies
-		sentence1(R,L,[]),		% Parse the sentence.
+		sentence1(R,L,[]),  % Parse the sentence.
 		bug(R),				% Print it for debugging
 		assert_rules(R), !.	% Assert it (them, potentially) in the DB.
 process(L) :-
