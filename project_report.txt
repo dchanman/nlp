@@ -7,8 +7,12 @@ The challenge with writing the knowledge base was figuring out we had to extend 
 
 We eventually decided to dynamically load our words by defining them within the knowledge base. This meant that we did not need to define our words separately in a Prolog file and we could write them up quickly. The drawback is that we would have to add additional markup to our knowledge base (eg. all nouns declared as "n:some noun"), and that a typo with one of our words could slip through and mess up the solution. Otherwise, we found this dynamic loading of words into our knowledge base to be simple and easy to use.
 
+2. 
+To add an interpreter loop, we used the template from Amzi's discussion of interpreter shells (loop :- repeat, stuff, fail.) as a foundation. The do/1 procedure handles valid user inputs and allows new handlers to be added easily. We load new knowledge bases using the load_rules/1 procedure. 
+
+The code does not handle some exceptions including load with invalid files, and solve or list without first loading a knowledge base. 
 
 8a.
 Adding commenting capability to the parser was simple. We only had to modify the process/1 procedure to ignore any knowledge base lines that started with a '%'.
-
-
+8b.
+After disallowing the determiner a/an in gramatically inappropriate places, we feel that it's not a terrific idea. Since users are the ones defining knowledge in the knowledge base and the program tries its best to make sense of the definitions, it's counterproductive for the program to be nitpicking on grammar when the importance should be on the knowledge. We found that some typos in our knowledge base prevented certain rules from being loaded. On a large knowledge base with users that are rapidly generaing the data without much proofreading, this would be frustrating and slow them down.

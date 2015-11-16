@@ -67,6 +67,10 @@ read_sent_helper([]) :- peek_char(Ch),       % Stop at end of file.
         Ch = 'end_of_file', !.
 read_sent_helper([]) :- peek_char(Ch),       % Stop at a period.
         Ch = '.', !, get_char(Ch).
+read_sent_helper(Words) :- peek_char(Ch),		 % Eat comments
+		Ch = '%', !, get_char(Ch),
+		read_word_to('\n',_),
+		read_sent_helper(Words).
 read_sent_helper(Words) :- peek_char(Ch),    % Eat whitespace
         char_type(Ch, space), !, get_char(Ch), 
         read_sent_helper(Words).
@@ -314,6 +318,45 @@ np(NPTerms) -->
         n(NTerms),
         { build_prepend_attrs(NTerms, APTerms, NPTerms) }.
 
+% For nonvoweled phrases
+np(NPTerms) --> 
+        det_opt_a, 
+        n(NTerms),
+		{ build_prepend_attrs(NTerms, [], NPTerms),
+		nonvoweled(NTerms) }.
+np(NPTerms) -->
+        det_opt_a,
+        adjp_star(APTerms),
+        n(NTerms),
+        { build_prepend_attrs(NTerms, APTerms, NPTerms),
+		nonvoweled(APTerms) }.
+
+
+% For voweled phrases without any adjectives
+np(NPTerms) --> 
+        det_opt_an, 
+        n(NTerms),
+		{ build_prepend_attrs(NTerms, [], NPTerms),
+		voweled(NTerms) }.
+np(NPTerms) -->
+        det_opt_an,
+        adjp_star(APTerms),
+        n(NTerms),
+        { build_prepend_attrs(NTerms, APTerms, NPTerms),
+		voweled(APTerms) }.
+
+% We specify whether an adjective or noun starts with a vowel or not here
+voweled([attr(_,X,_)|_]) :- atom_chars(X,[FirstChar|_]),is_vowel(FirstChar).
+voweled([attr(_,X,_)|_]) :- atom_chars(X,[FirstChar|_]),is_sometimes_vowel(FirstChar).
+nonvoweled([attr(_,X,_)|_]) :- atom_chars(X,[FirstChar|_]),\+is_vowel(FirstChar).
+is_vowel(a).
+is_vowel(e).
+is_vowel(i).
+is_vowel(o).
+is_vowel(u).
+is_sometimes_vowel(y).
+is_sometimes_vowel(h).
+
 % Zero or more adjectives (chained together without and before a noun).
 % Adjective phrases in a chain become a list of adjective phrases.
 adjp_star(APTerms) -->
@@ -333,8 +376,8 @@ adjp(APTerms) -->
 det_opt --> [].
 det_opt --> [its].
 det_opt --> [the].
-det_opt --> [a].
-det_opt --> [an].
+det_opt_a --> [a].
+det_opt_an --> [an].
 
 % Nouns become is_a attributes.
 n([]) --> [it].                           % "it" is ignored
@@ -581,9 +624,19 @@ sentencePhrase(Phrase) --> sentenceAtom(Type), {Phrase = [Type|[]]}. % Base case
 
 % this seperates a phrase into individual atoms. by diviting between a Head (the first line of a phrase) and wordType(it's attribute e.g. noun)
 sentenceAtom(Word) --> [Head, Type], {wordType(Type, Head, Word)}. % this is a case of just a word and a 'attribute' 
+<<<<<<< HEAD
 sentenceAtom(Word) --> [Head], vis, det_opt, [Type], {wordType(Type, Head, Word)}. %This deals with 'is' 'is a' and so on. vis refers to line 367 det_opt refers to line 312 and 333-337
 	
 and --> [and]. %if a line of words is separated by 'and'. These are used similarly to vis and det_opt.
+=======
+
+%This deals with 'is' 'is a' and so on. vis refers to line 367 det_opt refers to line 312 and 333-337	
+sentenceAtom(Word) --> [Head], vis, det_opt, [Type], {wordType(Type, Head, Word)}. 
+sentenceAtom(Word) --> [Head], vis, det_opt_a, [Type], {wordType(Type, Head, Word)}. 
+sentenceAtom(Word) --> [Head], vis, det_opt_an, [Type], {wordType(Type, Head, Word)}. 
+
+and --> [and]. %if a line of words is separated by 'and'
+>>>>>>> origin/master
 and --> []. %This one's a blank
 wordType(noun, X, n(X)). %following are the various 'attributes' a word can have
 wordType(verb, X, v(X)). %X is Head, the first word of a phrase. e.g. v(X) asserts v(lift)

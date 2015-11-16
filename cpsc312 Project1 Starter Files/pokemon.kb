@@ -1,68 +1,93 @@
 % Pokemon Database
 % Nikhil Agarwal, Derek Chan, Christopher Chou
 
+words:
+element is a noun.
+words:
+legs is a noun.
+words:
+water is an adjective.
+words:
+grass is an adjective.
+words:
+fire is an adjective.
+words:
+electric is an adjective.
+words:
+four is an adjective.
+words:
+two is an adjective.
+words:
+basic is an adjective.
+words:
+secondary is an adjective.
+words:
+final is an adjective.
+words:
+evolution is a noun.
+
 rule:
-if   its "n:element" is "adj:grass" and
-     it has "adj:four" "n:legs" and
-     it is a "n:basic evolutionary form"
+if   its element is grass and
+	 it has four legs and
+     it is a basic evolution
 then it is a "n:bulbasaur".
 
 rule:
-if   its "n:element" is "adj:grass" and
-     it has "adj:four" "n:legs" and
-     it is a "n:secondary evolutionary form"
+if   its element is grass and
+     it has four legs and
+     it is a secondary evolution
 then it is an "n:ivysaur".
 
 rule:
-if   its "n:element" is "adj:grass" and
-     it has "adj:four" "n:legs" and
-     it is a "n:final evolutionary form"
+if   its element is grass and
+     it has four legs and
+     it is a final evolution
 then it is a "n:venusaur".
 
 rule:
-if   its "n:element" is "adj:fire" and
-     it has "adj:two" "n:legs" and
-     it is a "n:basic evolutionary form"
+if   its element is fire and
+     it has two legs and
+     it is a basic evolution
 then it is a "n:charmander".
 
 rule:
-if   its "n:element" is "adj:fire" and
-     it has "adj:two" "n:legs" and
-     it is a "n:secondary evolutionary form"
-then it is an "n:charmeleon".
+if   its element is fire and
+     it has two legs and
+     it is a secondary evolution
+then it is a "n:charmeleon".
 
 rule:
-if   its "n:element" is "adj:fire" and
-     it has "adj:two" "n:legs" and
-     it is a "n:final evolutionary form"
+if   its element is fire and
+     it has two legs and
+     it is a final evolution
 then it is a "n:charizard".
 
 rule:
-if   its "n:element" is "adj:water" and
-     it has "adj:two" "n:legs" and
-     it is a "n:basic evolutionary form"
+if   its element is water and
+     it has two legs and
+     it is a basic evolution
 then it is a "n:squirtle".
 
 rule:
-if   its "n:element" is "adj:water" and
-     it has "adj:two" "n:legs" and
-     it is a "n:secondary evolutionary form"
-then it is an "n:wartortle".
+if   its element is water and
+     it has two legs and
+     it is a secondary evolution
+then it is a "n:wartortle".
 
 rule:
-if   its "n:element" is "adj:water" and
-     it has "adj:two" "n:legs" and
-     it is a "n:final evolutionary form"
+if   its element is water and
+     it has two legs and
+     it is a final evolution
 then it is a "n:blastoise".
 
 rule:
-if   its "n:element" is "adj:electric" and
-     it has "adj:two" "n:legs" and
-     it is a "n:basic evolutionary form"
-then it is an "n:pikachu".
+if   its element is electric and
+     it has two legs and
+     it is a basic evolution
+then it is a "n:pikachu".
 
 rule:
-if   its "n:element" is "adj:electric" and
-     it has "adj:two" "n:legs" and
-     it is a "n:final evolutionary form"
-then it is an "n:raichu".
+if   its element is electric and
+     it has two legs and
+     it is a final evolution
+then it is a "n:raichu".
