@@ -46,7 +46,7 @@ rule:
 if   its element is fire and
      it has two legs and
      it is a "n:secondary evolutionary form"
-then it is an "n:charmeleon".
+then it is a "n:charmeleon".
 
 rule:
 if   its element is fire and
@@ -64,7 +64,7 @@ rule:
 if   its element is water and
      it has two legs and
      it is a "n:secondary evolutionary form"
-then it is an "n:wartortle".
+then it is a "n:wartortle".
 
 rule:
 if   its element is water and
@@ -76,10 +76,10 @@ rule:
 if   its element is electric and
      it has two legs and
      it is a "n:basic evolutionary form"
-then it is an "n:pikachu".
+then it is a "n:pikachu".
 
 rule:
 if   its element is electric and
      it has two legs and
      it is a "n:final evolutionary form"
-then it is an "n:raichu".
+then it is a "n:raichu".

@@ -14,5 +14,5 @@ The code does not handle some exceptions including load with invalid files, and 
 
 8a.
 Adding commenting capability to the parser was simple. We only had to modify the process/1 procedure to ignore any knowledge base lines that started with a '%'.
-
-
+8b.
+After disallowing the determiner a/an in gramatically inappropriate places, we feel that it's not a terrific idea. Since users are the ones defining knowledge in the knowledge base and the program tries its best to make sense of the definitions, it's counterproductive for the program to be nitpicking on grammar when the importance should be on the knowledge. We found that some typos in our knowledge base prevented certain rules from being loaded. On a large knowledge base with users that are rapidly generaing the data without much proofreading, this would be frustrating and slow them down.
