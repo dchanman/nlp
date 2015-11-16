@@ -56,8 +56,10 @@ X == quit.
 
 greeting :-
 write('This is the Native Prolog shell.'), nl, 
-write('Enter load. solve. help. or quit.'), nl.
+write('Enter load. solve. list. help. or quit.'), nl.
 
+
+:- discontiguous do/1.
 do(load) :- load_kb, !.
 
 load_kb :-
@@ -67,14 +69,25 @@ load_rules(F).
 
 do(solve) :- solve, !.
 
+% do(list) will print out all the loaded rules
+do(list) :-  list_rules, !.
+
+list_rules :-
+% If there are no rules loaded, print the error message
+\+ current_predicate(rule/2) -> write('There are currently no rules loaded.'), nl ;
+% Else, print all the loaded rules
+write('The following rules are loaded:'),nl,nl,
+rule(A,B),A\=top_goal(_),append(B,[A],X),plain_gloss(X,Text),write_sentence(Text),nl,fail.
+list_rules :- true.
+
 do(help) :- 
-write('Type help. load. solve. or quit. at the prompt.'), nl, !.
+write('Type help. load. solve. list. or quit. at the prompt.'), nl, !.
 
 do(quit).
 
 do(X) :-
 write(X), 
-write('is not a legal command.'), nl, 
+write(' is not a legal command.'), nl, 
 fail.
 
 
