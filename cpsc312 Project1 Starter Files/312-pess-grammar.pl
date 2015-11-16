@@ -67,6 +67,10 @@ read_sent_helper([]) :- peek_char(Ch),       % Stop at end of file.
         Ch = 'end_of_file', !.
 read_sent_helper([]) :- peek_char(Ch),       % Stop at a period.
         Ch = '.', !, get_char(Ch).
+read_sent_helper(Words) :- peek_char(Ch),		 % Eat comments
+		Ch = '%', !, get_char(Ch),
+		read_word_to('\n',_),
+		read_sent_helper(Words).
 read_sent_helper(Words) :- peek_char(Ch),    % Eat whitespace
         char_type(Ch, space), !, get_char(Ch), 
         read_sent_helper(Words).
