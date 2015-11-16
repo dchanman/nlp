@@ -46,27 +46,31 @@
 %% Interpreter loop                                             %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% Start the interpreter loop. This predicate will work as long as 
+% the program is currently not in a previous loop. 
 main :-
 greeting, 
-repeat, 
+repeat,         % loops infinitely
 write('> '), 
 read(X), 
-do(X), 
+do(X),          % process user input
 X == quit.
 
+% Prints a cute greeting
 greeting :-
 write('This is the Native Prolog shell.'), nl, 
 write('Enter load. solve. list. help. or quit.'), nl.
 
-
 :- discontiguous do/1.
 do(load) :- load_kb, !.
 
+% Loads a knowledge base from a user specified filepath
 load_kb :-
 write('Enter filename in single quotes, followed by a period: '), 
 read(F), 
 load_rules(F).
 
+% Attempt to solve the current goal
 do(solve) :- solve, !.
 
 % do(list) will print out all the loaded rules
@@ -80,11 +84,14 @@ write('The following rules are loaded:'),nl,nl,
 rule(A,B),A\=top_goal(_),plain_gloss([rule(A,B)],Text),write_sentence(Text),nl,fail.
 list_rules :- true.
 
+% Print out helpful instructions to the user
 do(help) :- 
 write('Type help. load. solve. list. or quit. at the prompt.'), nl, !.
 
+% End the loop
 do(quit).
 
+% Handles invalid user inputs
 do(X) :-
 write(X), 
 write(' is not a legal command.'), nl, 
