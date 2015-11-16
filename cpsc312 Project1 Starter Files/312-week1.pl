@@ -37,9 +37,6 @@ read_word([]) :- peek_char(Ch), Ch = '\n', !, get_char(_).
 read_word([]) :- peek_char(Ch), Ch = 'end_of_file', !.
 read_word([Ch|Chs]) :- get_char(Ch), read_word(Chs).
 
-<<<<<<< Updated upstream
-
-
 % Part 3:
 % This question is in 312-pess.pl starting on line 352 
 % and updated grammar is in 312-pess-grammar.pl starting on line 572
