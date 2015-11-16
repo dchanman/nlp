@@ -180,8 +180,10 @@ prove_one(X, Hist) :-                      % Where the action is.  There's
         rule(X, Body),                     % some goal that can prove 
         prove(Body, Hist).                 % this; so, give it a shot.
 prove_one(X, Hist) :- \+ rule(X, _),       % If there's no goal to prove 
-                      ask(X, Hist), !,     % this, ask the user and
-                      known(X).            % trust the answer.
+                      clean_question(X,F),
+					  dump(X,F,Hist),
+					  ask(F, Hist), !,     % this, ask the user and
+                      known(F).            % trust the answer.
 
 % Note: a really clever version of prove would recognize that
 % portions of the query to be proven may already be known.  For example,
@@ -189,6 +191,23 @@ prove_one(X, Hist) :- \+ rule(X, _),       % If there's no goal to prove
 % already know that its claws are sharp. In that case, we could get away
 % with just asking whether it has long claws. The current version does
 % NOT do this.
+dump(attr(G,H,L),Filtered,Hist) :-
+	nl,nl,write('G:'),nl,write(G),nl,
+	nl,nl,write('H:'),nl,write(H),nl,
+	nl,nl,write('L:'),nl,write(L),nl,
+	nl,write('Hist:'),nl,write(Hist),nl,
+	nl,write('Orig:'),nl,write(attr(G,H,L)),nl,
+	nl,write('Filtered List:'),nl,write(Filtered),nl,
+	nl,write('known:--------------'),nl,known(Y),write(Y),nl,fail.
+dump(_,_,_) :- true.
+
+
+%clean_question(X,X).
+clean_question(attr(G,R,[]),attr(G,R,[])). 
+% If one of the attributes is not known, keep it in the list to ask
+clean_question(attr(G,R,[H|T]),attr(G,R,[H|T2])) :- \+known(attr(G,R,[H])), clean_question(attr(G,R,T),attr(G,R,T2)).
+% If one of the attributes IS known, do not include it in the list to ask
+clean_question(attr(G,R,[H|T]),attr(G,R,L)) :- known(attr(G,R,[H])), clean_question(attr(G,R,T),attr(G,R,L)).
 
 % implied(X) is true if X is known directly or implied by the database.
 % Note: implied assumes that "not", if it appears, appears only as the 

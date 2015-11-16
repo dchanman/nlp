@@ -17,69 +17,77 @@ words:
 four is an adjective.
 words:
 two is an adjective.
+words:
+basic is an adjective.
+words:
+secondary is an adjective.
+words:
+final is an adjective.
+words:
+evolution is a noun.
 
 rule:
 if   its element is grass and
-     it has four legs and
-     it is a "n:basic evolutionary form"
+	 it has four legs and
+     it is a basic evolution
 then it is a "n:bulbasaur".
 
 rule:
 if   its element is grass and
      it has four legs and
-     it is a "n:secondary evolutionary form"
+     it is a secondary evolution
 then it is an "n:ivysaur".
 
 rule:
 if   its element is grass and
      it has four legs and
-     it is a "n:final evolutionary form"
+     it is a final evolution
 then it is a "n:venusaur".
 
 rule:
 if   its element is fire and
      it has two legs and
-     it is a "n:basic evolutionary form"
+     it is a basic evolution
 then it is a "n:charmander".
 
 rule:
 if   its element is fire and
      it has two legs and
-     it is a "n:secondary evolutionary form"
+     it is a secondary evolution
 then it is a "n:charmeleon".
 
 rule:
 if   its element is fire and
      it has two legs and
-     it is a "n:final evolutionary form"
+     it is a final evolution
 then it is a "n:charizard".
 
 rule:
 if   its element is water and
      it has two legs and
-     it is a "n:basic evolutionary form"
+     it is a basic evolution
 then it is a "n:squirtle".
 
 rule:
 if   its element is water and
      it has two legs and
-     it is a "n:secondary evolutionary form"
+     it is a secondary evolution
 then it is a "n:wartortle".
 
 rule:
 if   its element is water and
      it has two legs and
-     it is a "n:final evolutionary form"
+     it is a final evolution
 then it is a "n:blastoise".
 
 rule:
 if   its element is electric and
      it has two legs and
-     it is a "n:basic evolutionary form"
+     it is a basic evolution
 then it is a "n:pikachu".
 
 rule:
 if   its element is electric and
      it has two legs and
-     it is a "n:final evolutionary form"
+     it is a final evolution
 then it is a "n:raichu".
