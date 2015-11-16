@@ -77,7 +77,7 @@ list_rules :-
 \+ current_predicate(rule/2) -> write('There are currently no rules loaded.'), nl ;
 % Else, print all the loaded rules
 write('The following rules are loaded:'),nl,nl,
-rule(A,B),A\=top_goal(_),append(B,[A],X),plain_gloss(X,Text),write_sentence(Text),nl,fail.
+rule(A,B),A\=top_goal(_),plain_gloss([rule(A,B)],Text),write_sentence(Text),nl,fail.
 list_rules :- true.
 
 do(help) :- 
