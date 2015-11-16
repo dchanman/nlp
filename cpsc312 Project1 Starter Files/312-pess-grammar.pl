@@ -575,20 +575,21 @@ write_sentence([Word|Words]) :- write(Word), tab(1), write_sentence(Words).
 
 sentence1(Words) --> sentencePhrase(Words).
 
-	
+% this seperates the phrases given from the .kb file. then passing it to sentenceAtom to further distinguish. 	
 sentencePhrase(Phrase) --> sentenceAtom(First), and, sentencePhrase(Rest), {Phrase = [First|Rest]}. %recursive. 'and' deals with how lines are seperated. Either by a 'and' or blank.
 sentencePhrase(Phrase) --> sentenceAtom(Type), {Phrase = [Type|[]]}. % Base case empty like our soul.
 
-% phrases to atoms.
+% this seperates a phrase into individual atoms. by diviting between a Head (the first line of a phrase) and wordType(it's attribute e.g. noun)
 sentenceAtom(Word) --> [Head, Type], {wordType(Type, Head, Word)}. % this is a case of just a word and a 'attribute' 
 sentenceAtom(Word) --> [Head], vis, det_opt, [Type], {wordType(Type, Head, Word)}. %This deals with 'is' 'is a' and so on. vis refers to line 367 det_opt refers to line 312 and 333-337
 	
-and --> [and]. %if a line of words is separated by 'and'
+and --> [and]. %if a line of words is separated by 'and'. These are used similarly to vis and det_opt.
 and --> []. %This one's a blank
 wordType(noun, X, n(X)). %following are the various 'attributes' a word can have
 wordType(verb, X, v(X)). %X is Head, the first word of a phrase. e.g. v(X) asserts v(lift)
 wordType(adjective, X, adj(X)).
 wordType(adverb, X, adv(X)).
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Vocabulary for the PESS parser                               %%
