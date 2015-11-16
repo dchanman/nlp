@@ -26,9 +26,17 @@ final is an adjective.
 words:
 evolution is a noun.
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% is_a 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 rule:
 if   its element is grass and
+	 it has legs and
+     it has four external legs and
 	 it has four legs and
+	 it has external legs and
+	 it has basic external legs and
      it is a basic evolution
 then it is a "n:bulbasaur".
 
@@ -91,3 +99,22 @@ if   its element is electric and
      it has two legs and
      it is a final evolution
 then it is a "n:raichu".
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% has_a
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+rule:
+if its element is water and
+	it is a "n:squirtle" then
+	it has "n:bubble".
+
+rule:
+if its element is fire and
+	it is a "n:charmander" then
+	it has "n:ember".
+
+rule:
+if its element is grass and
+	it is a "n:bulbasaur" then
+	it has "n:vine whip".
