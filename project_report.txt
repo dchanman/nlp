@@ -6,3 +6,9 @@ We created a knowledge base describing some popular characters from the Pokemon 
 The challenge with writing the knowledge base was figuring out we had to extend the rules in '312-pess-grammar.pl'. At first, we didn't understand why all of our nouns/adjectives/adverbs/etc were not understood by the main program when we tried to load our rules. When we realized that all of our words needed to be defined as nouns/adjectives/adverbs/etc, we were faced with deciding how we wanted to extend the grammar.
 
 We eventually decided to dynamically load our words by defining them within the knowledge base. This meant that we did not need to define our words separately in a Prolog file and we could write them up quickly. The drawback is that we would have to add additional markup to our knowledge base (eg. all nouns declared as "n:some noun"), and that a typo with one of our words could slip through and mess up the solution. Otherwise, we found this dynamic loading of words into our knowledge base to be simple and easy to use.
+
+
+8a.
+Adding commenting capability to the parser was simple. We only had to modify the process/1 procedure to ignore any knowledge base lines that started with a '%'.
+
+

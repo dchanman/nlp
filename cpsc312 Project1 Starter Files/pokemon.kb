@@ -1,3 +1,6 @@
+% Pokemon Database
+% Nikhil Agarwal, Derek Chan, Christopher Chou
+
 rule:
 if   its "n:element" is "adj:grass" and
      it has "adj:four" "n:legs" and

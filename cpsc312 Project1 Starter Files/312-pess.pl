@@ -375,6 +375,7 @@ load_rules :- !.            % Cut avoids backtracking (and re-processing!)
 % If I were going to add new types of statements in knowledge base
 % files, I might do it by writing extra process clauses below.
 process([]) :- !.           % Ignore empty rules.
+process(['%'|_]).			% Found a comment, ignore it.
 process(['rule:'|L]) :-     % Found a rule.
         rule(R,L,[]),       % Parse the rule.
         bug(R),             % Print it for debugging.
