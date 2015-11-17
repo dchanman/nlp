@@ -739,6 +739,8 @@ n(pintail).
 n(bird).
 n(throat).
 n(insects).
+n(NewWord) :- lookupNewWord(NewWord,n).
+%n(NewWord) :- morph_atoms_bag(NewWord, Bag),derkbagtostems(Bag,n). 
 
 % Adverbs.
 :- dynamic(adv/1).  % Ensure that the predicate can be modified dynamically
@@ -751,6 +753,7 @@ adv(ponderously).
 adv(powerfully).
 adv(agilely).
 adv(mottled).
+adv(NewWord) :- lookupNewWord(NewWord,s).
 
 % Adjectives.
 :- dynamic(adj/1).  % Ensure that the predicate can be modified dynamically
@@ -788,6 +791,7 @@ adj(brown).
 adj('v-shaped').
 adj(rusty).
 adj(square).
+adj(NewWord) :- lookupNewWord(NewWord,a).
 
 % Doing verbs (i.e., not is/are or has/have/contains/contain).
 :- dynamic(v/1).  % Ensure that the predicate can be modified dynamically
@@ -800,3 +804,16 @@ v(scavenges).
 v(quacks).
 v(summers).
 v(winters).
+v(NewWord) :- lookupNewWord(NewWord,v).
+
+% Import pronto_morph and wordnet
+:- consult('pronto_morph_engine.pl').
+:- consult('wordnet_prolog_2007/wn_s.pl').
+lookupNewWord(Word,Type) :- morph_atoms_bag(Word, Bag),derkbagtostems(Bag,Type). 
+% Grab the stems out of the bag
+derkbagtostems([],_).
+derkbagtostems([H|T],Type) :- write('   '),write(H),nl,derkdef(H,Type),!.
+derkbagtostems([_|T],Type) :- derkbagtostems(T,Type).
+% Determine the type from WordNet
+derkdef([[W|_]],Type) :- write('        '),s(_,_,W,Type,_,_),!,write(W),write(' type:'),write(Type),nl.
+
