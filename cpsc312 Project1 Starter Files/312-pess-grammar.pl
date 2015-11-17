@@ -807,6 +807,7 @@ v(winters).
 new_n(NewWord) :- \+n(NewWord),lookupNewWord(NewWord,n),assertz(n(NewWord)).
 new_adv(NewWord) :- \+adv(NewWord),lookupNewWord(NewWord,s),assertz(adv(NewWord)).
 new_adj(NewWord) :- \+adj(NewWord),lookupNewWord(NewWord,a),assertz(adj(NewWord)).
+new_adj(NewWord) :- \+adj(NewWord),lookupNewWord(NewWord,s),assertz(adj(NewWord)).
 new_v(NewWord) :- \+v(NewWord),lookupNewWord(NewWord,v),assertz(v(NewWord)).
 % Import pronto_morph and wordnet
 :- consult('pronto_morph_engine.pl').
