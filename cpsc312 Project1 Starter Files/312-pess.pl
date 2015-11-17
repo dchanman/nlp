@@ -409,6 +409,12 @@ process(['words:'|L]) :-    % Process Vocabularies
 		sentence1(R,L,[]),  % Parse the sentence.
 		bug(R),				% Print it for debugging
 		assert_rules(R), !.	% Assert it (them, potentially) in the DB.
+
+process(['goal:'|L]) :-
+		question(Attrs, Answer, L,[]),
+		assertz(rule(top_goal(Answer), Attrs)).
+		
+		
 process(L) :-
         write('trans error on:'),nl,
         write(L),nl.
