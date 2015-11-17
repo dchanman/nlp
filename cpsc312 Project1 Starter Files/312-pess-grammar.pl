@@ -383,21 +383,23 @@ det_opt_an --> [an].
 n([]) --> [it].                           % "it" is ignored
 n([attr(is_a,X,[])]) --> [X], { n(X) }.   % Anything listed below.
 n([attr(is_a,Name,[])]) --> lit(n, Name). % Any literal tagged as 'n'
-
+n([attr(is_a,X,[])]) --> [X], { new_n(X) }.   % Anything we can add
 
 % Adverbs are either those provided below or literals.
 adv([attr(is_how,X,[])]) --> [X], { adv(X) }.
 adv([attr(is_how,Name,[])]) --> lit(adv, Name).
+adv([attr(is_how,X,[])]) --> [X], { new_adv(X) }.
 
 % Adjectives are either those provided below or literals.
 adj([attr(is_like,X,[])]) --> [X], { adj(X) }.
 adj([attr(is_like,Name,[])]) --> lit(adj, Name).
-
+adj([attr(is_like,X,[])]) --> [X], { new_adj(X) }.
 
 % "Doing" verbs (as opposed to "has" and "is".
 % Either provided below or literals.
 vdoes([attr(does,X,[])]) --> [X], { v(X) }.
 vdoes([attr(does,Name,[])]) --> lit(v, Name).
+vdoes([attr(does,X,[])]) --> [X], { new_v(X) }.
 
 % "Having" verbs are "has" or "have" and "contain" or "contains".
 % The semi-colon is disjunction (just syntactic sugar
