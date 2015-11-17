@@ -318,45 +318,6 @@ np(NPTerms) -->
         n(NTerms),
         { build_prepend_attrs(NTerms, APTerms, NPTerms) }.
 
-% For nonvoweled phrases
-np(NPTerms) --> 
-        det_opt_a, 
-        n(NTerms),
-		{ build_prepend_attrs(NTerms, [], NPTerms),
-		nonvoweled(NTerms) }.
-np(NPTerms) -->
-        det_opt_a,
-        adjp_star(APTerms),
-        n(NTerms),
-        { build_prepend_attrs(NTerms, APTerms, NPTerms),
-		nonvoweled(APTerms) }.
-
-
-% For voweled phrases without any adjectives
-np(NPTerms) --> 
-        det_opt_an, 
-        n(NTerms),
-		{ build_prepend_attrs(NTerms, [], NPTerms),
-		voweled(NTerms) }.
-np(NPTerms) -->
-        det_opt_an,
-        adjp_star(APTerms),
-        n(NTerms),
-        { build_prepend_attrs(NTerms, APTerms, NPTerms),
-		voweled(APTerms) }.
-
-% We specify whether an adjective or noun starts with a vowel or not here
-voweled([attr(_,X,_)|_]) :- atom_chars(X,[FirstChar|_]),is_vowel(FirstChar).
-voweled([attr(_,X,_)|_]) :- atom_chars(X,[FirstChar|_]),is_sometimes_vowel(FirstChar).
-nonvoweled([attr(_,X,_)|_]) :- atom_chars(X,[FirstChar|_]),\+is_vowel(FirstChar).
-is_vowel(a).
-is_vowel(e).
-is_vowel(i).
-is_vowel(o).
-is_vowel(u).
-is_sometimes_vowel(y).
-is_sometimes_vowel(h).
-
 % Zero or more adjectives (chained together without and before a noun).
 % Adjective phrases in a chain become a list of adjective phrases.
 adjp_star(APTerms) -->
