@@ -804,18 +804,23 @@ v(summers).
 v(winters).
 
 % Procedures for looking up new words from WordNet
-new_n(NewWord) :- \+n(NewWord),lookupNewWord(NewWord,n),assertz(n(NewWord)).
-new_adv(NewWord) :- \+adv(NewWord),lookupNewWord(NewWord,s),assertz(adv(NewWord)).
-new_adj(NewWord) :- \+adj(NewWord),lookupNewWord(NewWord,a),assertz(adj(NewWord)).
-new_adj(NewWord) :- \+adj(NewWord),lookupNewWord(NewWord,s),assertz(adj(NewWord)).
-new_v(NewWord) :- \+v(NewWord),lookupNewWord(NewWord,v),assertz(v(NewWord)).
+new_n(NewWord) :- \+ignore(NewWord),\+n(NewWord),lookupNewWord(NewWord,n),assertz(n(NewWord)).
+new_adv(NewWord) :- \+ignore(NewWord),\+adv(NewWord),lookupNewWord(NewWord,s),assertz(adv(NewWord)).
+new_adj(NewWord) :- \+ignore(NewWord),\+adj(NewWord),lookupNewWord(NewWord,a),assertz(adj(NewWord)).
+new_adj(NewWord) :- \+ignore(NewWord),\+adj(NewWord),lookupNewWord(NewWord,s),assertz(adj(NewWord)).
+new_v(NewWord) :- \+ignore(NewWord),\+v(NewWord),lookupNewWord(NewWord,v),assertz(v(NewWord)).
 % Import pronto_morph and wordnet
 :- consult('pronto_morph_engine.pl').
 :- consult('wordnet_prolog_2007/wn_s.pl').
-lookupNewWord(Word,Type) :- morph_atoms_bag(Word, Bag),derkbagtostems(Bag,Type). 
+lookupNewWord(Word,Type) :- morph_atoms_bag(Word, Bag),bag_to_stems(Bag,Type). 
 % Grab the stems out of the bag
-derkbagtostems([H|T],Type) :- derkdef(H,Type),!.
-derkbagtostems([_|T],Type) :- derkbagtostems(T,Type).
+bag_to_stems([H|T],Type) :- check_wordnet_definition(H,Type),!.
+bag_to_stems([_|T],Type) :- bag_to_stems(T,Type).
 % Determine the type from WordNet
-derkdef([[W|_]],Type) :- s(_,_,W,Type,_,_),!,write(W),write(' type:'),write(Type),nl.
+check_wordnet_definition([[W|_]],Type) :- s(_,_,W,Type,_,_),!,write('        Added word:'),write(W),write(' type:'),write(Type),nl.
 
+% Ignore list - These are words that get incorrectly interpreted
+ignore(a).
+ignore(an).
+ignore(the).
+ignore(its).
