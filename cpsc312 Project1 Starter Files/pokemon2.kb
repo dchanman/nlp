@@ -1,5 +1,4 @@
-rule: 
-if its "n:element" is "n:grass" and 
-	it has "n:four legs" and 
-	its a "adj: secondary evolution"
-then its a "n:ivysaur".
+rule:
+if   it has "n:four legs" and 
+     its "n:element" is "n:grass" 
+then it is a "n:ivysaur".
