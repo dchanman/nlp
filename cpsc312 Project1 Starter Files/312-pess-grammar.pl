@@ -347,9 +347,9 @@ det_opt --> [an].
 % What is now considered a generic noun that could mean
 % any of the nouns listed
 n([],_) --> [it].
-n([attr(is_a,A,[])],A) --> [what], { n(A) }.
 n([attr(is_a,X,[])],_) --> [X], { n(X) }.
 n([attr(is_a,Name,[])],_) --> lit(n, Name). % Any literal tagged as 'n'
+n([attr(is_a,A,[])],A) --> [what], { n(A) }.
 n([attr(is_a,X,[])],_) --> [X], { new_n(X) }.
 
 % Adverbs are either those provided below or literals.
@@ -613,29 +613,29 @@ wordType(adverb, X, adv(X)).
 %%%%%
 %Parse Goals
 %%%%%
-question(Attrs,A) --> sentence(Attrs,A).
+question(Attrs, A) --> sentence(Attrs, A).
 
 pronouns --> [it]; [that]; ['IT']; ['THAT']. %Prep for upper and lower case
 exclamations --> []; [the]; [heck].
 
 verb --> [does]; [do]; [will]; [can].
-sentence(Attrs,A) -->
-		verb, sentence(Attrs,A).
+sentence(Attrs, A) -->
+		verb, sentence(Attrs, A).
 
 % begining with 'is it'...
-sentence(Attrs,A,[is,it|Rest],[]) :- 
-		sentence(Attrs,A,[it,is|Rest],[]).
+sentence(Attrs, A, [is,it|Rest], []) :- 
+		sentence(Attrs, A, [it, is|Rest], []).
 
 % begining with 'has'...
-sentence(Attrs,A,[has,it|Rest],[]) :-
-		sentence(Attrs,A,[it,has|Rest],[]).
+sentence(Attrs, A, [has, it|Rest], []) :-
+		sentence(Attrs, A, [it, has|Rest], []).
 
 % question in the form of 'what does'...
-sentence(Attrs,A,[what|Rest],[]) :-
-		append(Rest,[what],NewTerm),
-		sentence(Attrs,A,NewTerm,[]).
+sentence(Attrs, A, [what|Rest], []) :-
+		append(Rest, [what], Action),
+		sentence(Attrs, A, Action, []).
 
-% interpretation of 'what the heack is THAT'
+% q3 Bonus 'what the heack is 'THAT'' to be equivalent to 'what is it'
 sentence([attr(is_a,A,[])],A) -->
 		[what],
 		[the],
@@ -730,7 +730,6 @@ adj(webbed).
 adj(flat).
 adj(curved).
 adj(sharp).
-adj(small).
 adj(hooked).
 adj(one).
 adj(long).
@@ -762,7 +761,6 @@ adj(square).
 :- dynamic(v/1).  % Ensure that the predicate can be modified dynamically
 
 v(eats).
-v(eat).
 v(flies).
 v(lives).
 v(feeds).
