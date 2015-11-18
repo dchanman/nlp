@@ -12,6 +12,12 @@ To add an interpreter loop, we used the template from Amzi's discussion of inter
 
 The code does not handle some exceptions including load with invalid files, and solve or list without first loading a knowledge base. 
 
+4.
+To add the ability to change goals to the interpreter loop, we used the do/1 procedure as described above. First we read the user input as a sentence and then parse it as a question using the question/4 procedure. We then print out the translated back input and finally, replace top_goal.
+
+5.
+To add the ability to assert rules or facts to the interpreter loop, we used the do/1 procedure again. We simply read the user input as a sentence (just like before) and process it as we would a line in a knowledge base.
+
 8a.
 Adding commenting capability to the parser was simple. We only had to modify the process/1 procedure to ignore any knowledge base lines that started with a '%'.
 8b.
