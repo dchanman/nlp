@@ -379,10 +379,10 @@ adjp(APTerms,A) -->
 det_opt --> [].
 det_opt --> [its].
 det_opt --> [the].
-%det_opt --> [a].
-%det_opt --> [an].
-det_opt_a --> [a].
-det_opt_an --> [an].
+det_opt --> [a].
+det_opt --> [an].
+%det_opt_a --> [a].
+%det_opt_an --> [an].
 
 % Nouns become is_a attributes.
 % What is now considered a generic noun that could mean
