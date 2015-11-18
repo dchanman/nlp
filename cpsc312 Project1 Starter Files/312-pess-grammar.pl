@@ -771,7 +771,10 @@ v(quacks).
 v(summers).
 v(winters).
 
+% Q6:
 % Procedures for looking up new words from WordNet
+% 	The parser tries to add determinants as words, and since the determinants exist in WordNet,
+%	they unfortunately get added. This is why these procedures filter out words on the ignore/1 list.
 new_n(NewWord) :- \+ignore(NewWord),\+n(NewWord),lookupNewWord(NewWord,n),assertz(n(NewWord)).
 new_adv(NewWord) :- \+ignore(NewWord),\+adv(NewWord),lookupNewWord(NewWord,s),assertz(adv(NewWord)).
 new_adj(NewWord) :- \+ignore(NewWord),\+adj(NewWord),lookupNewWord(NewWord,a),assertz(adj(NewWord)).
@@ -780,12 +783,13 @@ new_v(NewWord) :- \+ignore(NewWord),\+v(NewWord),lookupNewWord(NewWord,v),assert
 % Import pronto_morph and wordnet
 :- consult('pronto_morph_engine.pl').
 :- consult('wordnet_prolog_2007/wn_s.pl').
+% Take a word and retrieve its stems from pronto_morph
 lookupNewWord(Word,Type) :- morph_atoms_bag(Word, Bag),bag_to_stems(Bag,Type). 
-% Grab the stems out of the bag
+% Grab the stems out of the bag and pass them to WordNet
 bag_to_stems([H|T],Type) :- check_wordnet_definition(H,Type),!.
 bag_to_stems([_|T],Type) :- bag_to_stems(T,Type).
-% Determine the type from WordNet
-check_wordnet_definition([[W|_]],Type) :- s(_,_,W,Type,_,_),!,write('        Added word:'),write(W),write(' type:'),write(Type),nl.
+% Determine whether the word exists in WordNet and print the type
+check_wordnet_definition([[W|_]],Type) :- s(_,_,W,Type,_,_).
 
 % Ignore list - These are words that get incorrectly interpreted
 ignore(a).
