@@ -391,23 +391,27 @@ n([],_) --> [it].
 n([attr(is_a,A,[])],A) --> [what], { n(A) }.
 n([attr(is_a,X,[])],_) --> [X], { n(X) }.
 n([attr(is_a,Name,[])],_) --> lit(n, Name). % Any literal tagged as 'n'
+n([attr(is_a,X,[])],_) --> [X], { new_n(X) }.
 
 % Adverbs are either those provided below or literals.
 adv([attr(is_how,Name,[])],_) --> lit(adv, Name).
 adv([attr(is_how,X,[])],_) --> [X], { adv(X) }.
 adv([attr(is_how,A,[])],A) --> [what], { adv(A) }.
+adv([attr(is_how,X,[])],_) --> [X], { new_adv(X) }.
 
 
 % Adjectives are either those provided below or literals.
 adj([attr(is_like,Name,[])],_) --> lit(adj, Name).
 adj([attr(is_like,X,[])],_) --> [X], { adj(X) }.
 adj([attr(is_like,A,[])],A) --> [what], { adj(A) }.
+adj([attr(is_like,X,[])],_) --> [X], { new_adj(X) }.
 
 % "Doing" verbs (as opposed to "has" and "is".
 % Either provided below or literals.
 vdoes([attr(does,Name,[])],_) --> lit(v, Name).
 vdoes([attr(does,X,[])],_) --> [X], { v(X) }.
 vdoes([attr(does,A,[])],A) --> [what], { v(A) }.
+vdoes([attr(does,X,[])],_) --> [X], { new_v(X) }.
 
 % "Having" verbs are "has" or "have" and "contain" or "contains".
 % The semi-colon is disjunction (just syntactic sugar
@@ -809,3 +813,25 @@ v(scavenges).
 v(quacks).
 v(summers).
 v(winters).
+
+% Procedures for looking up new words from WordNet
+new_n(NewWord) :- \+ignore(NewWord),\+n(NewWord),lookupNewWord(NewWord,n),assertz(n(NewWord)).
+new_adv(NewWord) :- \+ignore(NewWord),\+adv(NewWord),lookupNewWord(NewWord,s),assertz(adv(NewWord)).
+new_adj(NewWord) :- \+ignore(NewWord),\+adj(NewWord),lookupNewWord(NewWord,a),assertz(adj(NewWord)).
+new_adj(NewWord) :- \+ignore(NewWord),\+adj(NewWord),lookupNewWord(NewWord,s),assertz(adj(NewWord)).
+new_v(NewWord) :- \+ignore(NewWord),\+v(NewWord),lookupNewWord(NewWord,v),assertz(v(NewWord)).
+% Import pronto_morph and wordnet
+:- consult('pronto_morph_engine.pl').
+:- consult('wordnet_prolog_2007/wn_s.pl').
+lookupNewWord(Word,Type) :- morph_atoms_bag(Word, Bag),bag_to_stems(Bag,Type). 
+% Grab the stems out of the bag
+bag_to_stems([H|T],Type) :- check_wordnet_definition(H,Type),!.
+bag_to_stems([_|T],Type) :- bag_to_stems(T,Type).
+% Determine the type from WordNet
+check_wordnet_definition([[W|_]],Type) :- s(_,_,W,Type,_,_),!,write('        Added word:'),write(W),write(' type:'),write(Type),nl.
+
+% Ignore list - These are words that get incorrectly interpreted
+ignore(a).
+ignore(an).
+ignore(the).
+ignore(its).
