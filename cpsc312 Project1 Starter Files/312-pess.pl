@@ -412,8 +412,8 @@ process(['words:'|L]) :-    % Process Vocabularies
 		assert_rules(R), !.	% Assert it (them, potentially) in the DB.
 
 process(['goal:'|L]) :-
-		question(Attrs, Answer, L,[]),
-		assertz(rule(top_goal(Answer), Attrs)).
+		question(Attrs, A, L,[]),
+		assertz(rule(top_goal(A), Attrs)).
 		
 		
 process(L) :-

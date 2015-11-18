@@ -12,6 +12,40 @@ To add an interpreter loop, we used the template from Amzi's discussion of inter
 
 The code does not handle some exceptions including load with invalid files, and solve or list without first loading a knowledge base. 
 
+3.
+Unlike the q3 of the first-checkpoint. The goals are dynamically loaded into the knowledge base. This requires a new method of writing process rules than before.
+In 312-pess.pl
+
+The line: assertz(rule(top_goal(X), [attr(is_a, X, [])])) was moved from clear_db to load_rules(F). This is because otherwise there will by a conflicting top_goal, when entered in the .kb file or typed into the running program.
+This is the default goal if none is stated in the input .kb file.
+
+In 312-pess-grammar.pl
+
+An extra parameter A is added to sentence/2 and subsequently to np/2 and vp/2, this then is also added to np_conj_plus/2, np_conj/2, adj_conj_plus/2, adj_conj/2, adv_star/2, int_adv_plus/2
+This is to allow goals to be passed along. %%btw the extra A's were added using find replace. It was still extremely tedious and many hours were spent catching missing or unnecessary A's. In addition, in retrospect the choic of A (which is my middle initial), was extremely poor and caused a lot of issues using ctrl-f
+
+In addition the following lines were added: 
+n([attr(is_a,A,[])],A) --> [what], { n(A) }.
+adv([attr(is_how,A,[])],A) --> [what], { adv(A) }.
+adj([attr(is_like,A,[])],A) --> [what], { adj(A) }.
+vdoes([attr(does,A,[])],A) --> [what], { v(A) }.
+
+These are to allow 'what' to be interpreted correctly. These account for nouns adverbs adjectives and verbs(with does, not has.)
+
+There are 4 cases, that need to parsed
+
+Case 1: e.g. begins with Is it a _____. 
+This can be rearranged into: it is a _____.
+
+Case 2: e.g.  has _____.
+Which, when does is removed it ____, which is parsed.
+
+Case 3: e.g. what does ______.
+
+Case 4 (Bonus): what the heck is 'THAT' 
+ use attr to to extract attribute of parsed sentence,
+ it can then be interpreted as what is it.
+ 
 4.
 To add the ability to change goals to the interpreter loop, we used the do/1 procedure as described above. First we read the user input as a sentence and then parse it as a question using the question/4 procedure. We then print out the translated back input and finally, replace top_goal.
 

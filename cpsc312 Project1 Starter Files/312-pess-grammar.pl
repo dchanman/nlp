@@ -615,10 +615,11 @@ wordType(adverb, X, adv(X)).
 %%%%%
 question(Attrs, A) --> sentence(Attrs, A).
 
-pronouns --> [it]; [that]; ['IT']; ['THAT']. %Prep for upper and lower case
-exclamations --> []; [the]; [heck].
+pronouns --> [it]; [that]; ['IT']; ['THAT']; [IT]; [THAT]. %Prep for upper and lower case as well as presense of apostrophe
+exclamations --> []; [heck]; [hell].%just testing.
 
-verb --> [does]; [do]; [will]; [can].
+verb --> [does]; [will]; [can]; [do]. %cover all verbs
+%deals with the verbs at the beginning of the sentence.
 sentence(Attrs, A) -->
 		verb, sentence(Attrs, A).
 
