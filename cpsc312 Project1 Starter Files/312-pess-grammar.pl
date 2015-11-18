@@ -625,55 +625,52 @@ sentencePhrase(Phrase) --> sentenceAtom(Type), {Phrase = [Type|[]]}. % Base case
 
 % this seperates a phrase into individual atoms. by diviting between a Head (the first line of a phrase) and wordType(it's attribute e.g. noun)
 sentenceAtom(Word) --> [Head, Type], {wordType(Type, Head, Word)}. % this is a case of just a word and a 'attribute' 
-sentenceAtom(Word) --> [Head], vis, det_opt, [Type], {wordType(Type, Head, Word)}. %This deals with 'is' 'is a' and so on. vis refers to line 367 det_opt refers to line 312 and 333-337
-	
-and --> [and]. %if a line of words is separated by 'and'. These are used similarly to vis and det_opt.
 %This deals with 'is' 'is a' and so on. vis refers to line 367 det_opt refers to line 312 and 333-337	
 sentenceAtom(Word) --> [Head], vis, det_opt, [Type], {wordType(Type, Head, Word)}. 
 sentenceAtom(Word) --> [Head], vis, det_opt_a, [Type], {wordType(Type, Head, Word)}. 
 sentenceAtom(Word) --> [Head], vis, det_opt_an, [Type], {wordType(Type, Head, Word)}. 
 
-and --> [and]. %if a line of words is separated by 'and'
+and --> [and]. %if a line of words is separated by 'and'. These are used similarly to vis and det_opt.
 and --> []. %This one's a blank
 wordType(noun, X, n(X)). %following are the various 'attributes' a word can have
 wordType(verb, X, v(X)). %X is Head, the first word of a phrase. e.g. v(X) asserts v(lift)
 wordType(adjective, X, adj(X)).
 wordType(adverb, X, adv(X)).
 
-%%%%%%%%
-% goal parsing
-%%%%%%%%%%
 
-goal(Goal) -->
-        question(Head),
-        {build_rules([], Head, Goal)}. % That's a fact! No body. using from line 390
 
+%%%%%
+%Parse Goals
+%%%%%
+question(Attrs,A) --> sentence(Attrs,A).
 
 pronouns --> [it]; [that]; ['IT']; ['THAT']. %Prep for upper and lower case
-exclamation --> []; [the],[heck]. %adding mild profanity
+exclamations --> []; [the]; [heck].
 
-question(Attrs, Input, []) :- % A question consists of the following
-	Input = [VIS, PN|Rest],
-	vis([VIS], []),			%vis -->[is]; [are]. from line 367
-	pronouns([Pronouns], []),
-	sentence(Attrs, [it, is|Rest], []).
+verb --> [does]; [do]; [will]; [can].
+sentence(Attrs,A) -->
+		verb, sentence(Attrs,A).
 
+% begining with 'is it'...
+sentence(Attrs,A,[is,it|Rest],[]) :- 
+		sentence(Attrs,A,[it,is|Rest],[]).
 
-verbs --> [will]; [does]; [can]. %the verbs we will use
-question(Attrs) --> verbs, sentence(Attrs). % A question(Attrs) is composed of a verb followed by a sentence(Attrs)
+% begining with 'has'...
+sentence(Attrs,A,[has,it|Rest],[]) :-
+		sentence(Attrs,A,[it,has|Rest],[]).
 
+% question in the form of 'what does'...
+sentence(Attrs,A,[what|Rest],[]) :-
+		append(Rest,[what],NewTerm),
+		sentence(Attrs,A,NewTerm,[]).
 
-question(Attrs) -->
-	[what], exclamation, verbs, pronouns, [Verb],
-	{sentence(Attrs, [it, Verb, what], [])}.
-
-question(Attrs) -->
-	[what], exclamation, vis, pronouns,
-	{sentence(Attrs, [it, is, what], [])}.
-
-question(Attrs) --> sentence(Attrs).
-
-
+% interpretation of 'what the heack is THAT'
+sentence([attr(is_a,A,[])],A) -->
+		[what],
+		[the],
+		exclamations,
+		vis,  			%vis -->[is]; [are]. from line 367
+		pronouns.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Vocabulary for the PESS parser                               %%
@@ -762,6 +759,7 @@ adj(webbed).
 adj(flat).
 adj(curved).
 adj(sharp).
+adj(small).
 adj(hooked).
 adj(one).
 adj(long).
@@ -793,6 +791,7 @@ adj(square).
 :- dynamic(v/1).  % Ensure that the predicate can be modified dynamically
 
 v(eats).
+v(eat).
 v(flies).
 v(lives).
 v(feeds).
