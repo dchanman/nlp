@@ -387,6 +387,7 @@ load_rules(F) :-
         see(F),
         load_rules,
         write('rules loaded'),nl,
+		assertz(rule(top_goal(X), [attr(is_a, X, [])])),
         seen, !.
 
 % Load rules from default input.
