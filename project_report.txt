@@ -32,17 +32,18 @@ vdoes([attr(does,A,[])],A) --> [what], { v(A) }.
 
 These are to allow 'what' to be interpreted correctly. These account for nouns adverbs adjectives and verbs(with does, not has.)
 
-There are 4 cases, that need to parsed
+There are 5 cases, that need to parsed
+Case 1: e.g. does it _____.
 
-Case 1: e.g. begins with Is it a _____. 
+Case 2: e.g. begins with Is it a _____. 
 This can be rearranged into: it is a _____.
 
-Case 2: e.g.  has _____.
+Case 3: e.g.  has _____.
 Which, when does is removed it ____, which is parsed.
 
-Case 3: e.g. what does ______.
+Case 4: e.g. what does ______.
 
-Case 4 (Bonus): what the heck is 'THAT' 
+Case 5 (Bonus): what the heck is 'THAT' 
  use attr to to extract attribute of parsed sentence,
  it can then be interpreted as what is it.
  
