@@ -427,9 +427,9 @@ assert_rules([R|Rs]) :- assertz(R), assert_rules(Rs).
 % Also establishes the default top goal (to find out what "it" is).
 clear_db :-
         abolish(rule,2),
-        dynamic(rule/2),
+        dynamic(rule/2).
         %% For now, top_goal is set manually.
-        assertz(rule(top_goal(X), [attr(is_a, X, [])])).
+        %% assertz(rule(top_goal(X), [attr(is_a, X, [])])).
 
 % Gloss a rule for debugging output.
 bug(X) :- write('Understood: '), 
