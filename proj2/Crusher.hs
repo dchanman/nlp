@@ -1,3 +1,5 @@
+module Crusher where
+
 -- CPSC 312 - Project 2
 -- by Khurram Ali Jaffery
 
@@ -14,6 +16,7 @@
 --		 W is a piece of the White player
 --		 B is a piece of the Black player
 --
+
 
 data Piece = D | W | B deriving (Eq, Show)
 
@@ -215,8 +218,6 @@ sTrToBoard s = map (\ x -> check x) s
 boardToStr :: Board -> String
 boardToStr b = map (\ x -> check x) b
 	where 
-		check W = 'W'
-		check B = 'B'
 		check D = '-'
 
 --
