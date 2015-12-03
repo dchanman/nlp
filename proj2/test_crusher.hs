@@ -2,6 +2,7 @@ module Main where
 
 import Test.HUnit
 import Crusher
+import Data.List
 
 -- Test piece counting
 test_countPiecesW_1 = TestCase (assertEqual "Count pieces White" 1 (countPiecesW (sTrToBoard "-W-----") 0))
@@ -63,8 +64,52 @@ tests_inSomeOrder = TestList [
 	TestLabel "Check ordered" test_inSomeOrder_12
 	]
 
+-- Helper test function, checks to make sure two lists contain identical members, except maybe
+-- in a different order.
+helper_listsContainSameUniqueMembers a b = (sort a) == (sort b)
+
+-- Sample board we will test with
+--					 (-1,-1)   ( 1,-1)
+--               (-2, 0)  ( 0, 0)  ( 2, 0)
+--                   (-1, 1)   ( 1, 1)
+
+sample_generateSlides = generateSlides [(-1,-1),(1,-1),(-2,0),(0,0),(2,0),(-1,1),(1,1)]
+test_generateSlides_1 = TestCase (assertBool "Corner slides" (elem ((-1,-1),(1,-1)) sample_generateSlides))
+test_generateSlides_2 = TestCase (assertBool "Corner slides" (elem ((-1,-1),(0,0)) sample_generateSlides))
+test_generateSlides_3 = TestCase (assertBool "Corner slides" (elem ((-1,-1),(-2,0)) sample_generateSlides))
+test_generateSlides_all = TestCase (assertBool "All"
+	(helper_listsContainSameUniqueMembers sample_generateSlides
+		[
+		((-1,-1),(1,-1)),((-1,-1),(-2,0)),((-1,-1),(0,0)),
+		((1,-1),(-1,-1)),((1,-1),(0,0)),((1,-1),(2,0)),
+		((-2,0),(-1,-1)),((-2,0),(0,0)),((-2,0),(-1,1)),
+		((0,0),(-1,-1)),((0,0),(1,-1)),((0,0),(-2,0)),((0,0),(2,0)),((0,0),(-1,1)),((0,0),(1,1)),
+		((2,0),(1,-1)),((2,0),(0,0)),((2,0),(1,1)),
+		((-1,1),(-2,0)),((-1,1),(0,0)),((-1,1),(1,1)),
+		((1,1),(0,0)),((1,1),(2,0)),((1,1),(-1,1))
+		]))
+
+sample_generateLeaps = generateLeaps [(-1,-1),(1,-1),(-2,0),(0,0),(2,0),(-1,1),(1,1)]
+test_generateLeaps_all = TestCase (assertBool "All"
+	(helper_listsContainSameUniqueMembers sample_generateLeaps
+		[
+		((-1,-1),(0,0),(1,1)),
+		((1,-1),(0,0),(-1,1)),
+		((-2,0),(0,0),(2,0)),
+		((2,0),(0,0),(-2,0)),
+		((-1,1),(0,0),(1,-1)),
+		((1,1),(0,0),(-1,-1))
+		]))
+
+tests_generateSlidesLeaps = TestList [
+	TestLabel "Generate Slides" test_generateSlides_1,
+	TestLabel "Generate Slides" test_generateSlides_2,
+	TestLabel "Generate Slides" test_generateSlides_3,
+	TestLabel "Generate Slides" test_generateSlides_all,
+	TestLabel "Generate Leaps" test_generateLeaps_all
+	]
 
 main = do
 	runTestTT tests_count_pieces;
 	runTestTT tests_inSomeOrder;
-
+	runTestTT tests_generateSlidesLeaps
