@@ -282,9 +282,9 @@ generateSlides :: Grid -> [Slide]
 generateSlides b = [((x1,y1),(x2,y2)) |
 	(x1,y1) <- b,
 	(x2,y2) <- b,
-	-- If we don't switch rows, its an adjacent x spot
+	-- If we don't switch rows, its an adjacent x spot (x +- 2)
 	((y1 == y2) && (abs (x1 - x2) == 2)) ||
-	-- If we do switch rows, we have to increment x
+	-- If we do switch rows, (x +- 1)
 	((abs (y1 - y2) == 1) && (abs (x1-x2) == 1))
 	]
 	
@@ -310,8 +310,19 @@ generateSlides b = [((x1,y1),(x2,y2)) |
 -- Returns: the list of all Jumps possible on the given grid
 --
 
---generateLeaps :: Grid -> Int -> [Jump]
---generateLeaps b n = -- To Be Completed
+inSomeOrder :: Int -> Int -> Int -> Bool
+inSomeOrder a b c = (a > b && b > c) || (a < b && b < c)
+
+generateLeaps :: Grid -> [Jump]
+generateLeaps b = [((x1,y1),(x2,y2),(x3,y3)) |
+	(x1,y1) <- b,
+	(x2,y2) <- b,
+	(x3,y3) <- b,
+	-- Jumping along a row
+	(y1 == y2 && y2 == y3 && (inSomeOrder x1 x2 x3)) ||
+	-- Jumping between rows
+	((inSomeOrder y1 y2 y3) && (inSomeOrder x1 x2 x3))
+	]
 
 --
 -- stateSearch
