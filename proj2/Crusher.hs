@@ -272,8 +272,22 @@ generateGrid n1 n2 n3 acc
 -- Returns: the list of all Slides possible on the given grid
 --
 
---generateSlides :: Grid -> Int -> [Slide]
---generateSlides b n = -- To Be Completed 
+--
+--					 (-1,-1)   ( 1,-1)
+--               (-2, 0)  ( 0, 0)  ( 2, 0)
+--                   (-1, 1)   ( 1, 1)
+--	generateSlides [(-1,-1),(1,-1),(-2,0),(0,0),(2,0),(-1,1),(1,1)]
+
+generateSlides :: Grid -> [Slide]
+generateSlides b = [((x1,y1),(x2,y2)) |
+	(x1,y1) <- b,
+	(x2,y2) <- b,
+	-- If we don't switch rows, its an adjacent x spot
+	((y1 == y2) && (abs (x1 - x2) == 2)) ||
+	-- If we do switch rows, we have to increment x
+	((abs (y1 - y2) == 1) && (abs (x1-x2) == 1))
+	]
+	
 
 --
 -- generateLeaps
