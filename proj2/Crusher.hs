@@ -440,13 +440,13 @@ playerCounter player board
 countPiecesW :: Board -> Int -> Int
 countPiecesW board acc 
 	| null board			= acc			
-	| (head board) == B		= countPiecesW(tail board) (acc + 1)
+	| (head board) == W		= countPiecesW (tail board) (acc + 1)
 	| otherwise 			= countPiecesW (tail board) acc
 	
 countPiecesB :: Board -> Int -> Int
 countPiecesB board acc 
 	| null board			= acc			
-	| (head board) == W		= countPiecesB (tail board) (acc + 1)
+	| (head board) == B		= countPiecesB (tail board) (acc + 1)
 	| otherwise 			= countPiecesB (tail board) acc	
 	
 	
