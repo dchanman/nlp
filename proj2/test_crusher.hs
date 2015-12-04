@@ -339,9 +339,132 @@ test_generateNewStates_2 = TestCase (assertEqual "Generate New States, filter hi
 		)
 	)
 
+sampleSmallGrid = [(-1,-1),(1,-1),(-2,0),(0,0),(2,0),(-1,1),(1,1)]
+test_generateNewStates_3 = TestCase (assertEqual "Generate New States, small grid"
+	-- Expected Output
+	[(sTrToBoard "W------"),
+		(sTrToBoard "-W-----"),
+		(sTrToBoard "--W----"),
+		(sTrToBoard "----W--"),
+		(sTrToBoard "-----W-"),
+		(sTrToBoard "------W")
+		]
+	-- Actual Output
+	(generateNewStates
+		(sTrToBoard "---W---") -- the current state
+		[] -- history
+		sampleSmallGrid -- grid
+		(generateSlides sampleSmallGrid) -- slides
+		(generateLeaps sampleSmallGrid) -- jumps
+		W -- the player
+		)
+	)
+
+test_generateNewStates_4 = TestCase (assertEqual "Generate New States, small grid, some history"
+	-- Expected Output
+	[(sTrToBoard "W------"),
+		(sTrToBoard "-W-----"),
+		(sTrToBoard "-----W-"),
+		(sTrToBoard "------W")
+		]
+	-- Actual Output
+	(generateNewStates
+		(sTrToBoard "---W---") -- the current state
+		[(sTrToBoard "--W----"),(sTrToBoard "----W--")] -- history
+		sampleSmallGrid -- grid
+		(generateSlides sampleSmallGrid) -- slides
+		(generateLeaps sampleSmallGrid) -- jumps
+		W -- the player
+		)
+	)
+
+test_generateNewStates_5 = TestCase (assertEqual "Generate New States, small grid, some blocks"
+	-- Expected Output
+	[(sTrToBoard "B--W---"),
+		(sTrToBoard "---W-B-")
+		]
+	-- Actual Output
+	(generateNewStates
+		(sTrToBoard "--BW---") -- the current state
+		[] -- history
+		sampleSmallGrid -- grid
+		(generateSlides sampleSmallGrid) -- slides
+		(generateLeaps sampleSmallGrid) -- jumps
+		B -- the player
+		)
+	)
+
+test_generateNewStates_6 = TestCase (assertEqual "Generate New States, small grid, some leaps"
+	-- Expected Output
+	[(sTrToBoard "B--B---"),
+		(sTrToBoard "---B-B-"),
+		(sTrToBoard "B-B----"),
+		(sTrToBoard "-BB----"),
+		(sTrToBoard "--B-B--"),
+		(sTrToBoard "--B--B-"),
+		(sTrToBoard "--B---B"),
+		(sTrToBoard "---BB--")
+		]
+	-- Actual Output
+	(generateNewStates
+		(sTrToBoard "--BB---") -- the current state
+		[] -- history
+		sampleSmallGrid -- grid
+		(generateSlides sampleSmallGrid) -- slides
+		(generateLeaps sampleSmallGrid) -- jumps
+		B -- the player
+		)
+	)
+
+test_generateNewStates_7 = TestCase (assertEqual "Generate New States, small grid, some crushing"
+	-- Expected Output
+	[(sTrToBoard "B--BW--"),
+		(sTrToBoard "---BWB-"),
+		(sTrToBoard "B-B-W--"),
+		(sTrToBoard "-BB-W--"),
+		(sTrToBoard "--B-WB-"),
+		(sTrToBoard "--B-W-B"),
+		(sTrToBoard "---BB--")
+		]
+	-- Actual Output
+	(generateNewStates
+		(sTrToBoard "--BBW--") -- the current state
+		[] -- history
+		sampleSmallGrid -- grid
+		(generateSlides sampleSmallGrid) -- slides
+		(generateLeaps sampleSmallGrid) -- jumps
+		B -- the player
+		)
+	)
+
+test_generateNewStates_8 = TestCase (assertEqual "Generate New States, small grid, some crushing, some history"
+	-- Expected Output
+	[
+		(sTrToBoard "---BWB-"),
+		(sTrToBoard "B-B-W--"),
+		(sTrToBoard "-BB-W--"),
+		(sTrToBoard "---BB--")
+		]
+	-- Actual Output
+	(generateNewStates
+		(sTrToBoard "--BBW--") -- the current state
+		[(sTrToBoard "B--BW--"),(sTrToBoard "--B-WB-"),(sTrToBoard "--B-W-B")] -- history
+		sampleSmallGrid -- grid
+		(generateSlides sampleSmallGrid) -- slides
+		(generateLeaps sampleSmallGrid) -- jumps
+		B -- the player
+		)
+	)
+
 tests_generateNewStates = TestList [
 	test_generateNewStates_1,
-	test_generateNewStates_2
+	test_generateNewStates_2,
+	test_generateNewStates_3,
+	test_generateNewStates_4,
+	test_generateNewStates_5,
+	test_generateNewStates_6,
+	test_generateNewStates_7,
+	test_generateNewStates_8
 	]
 
 main = do
