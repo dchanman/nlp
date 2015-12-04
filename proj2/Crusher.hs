@@ -228,6 +228,22 @@ boardToStr b = map (\ x -> check x) b
 		check D = '-'
 
 --
+-- boardToState
+--
+-- This function consumes a board and a grid to convert them into a state.
+--
+-- Arguments:
+-- -- board: the Board to convert into a State
+-- -- grid: the Grid to convert into a State
+--
+-- Returns: The State corresponding to the board and the grid
+--
+boardToState :: Board -> Grid -> State
+boardToState [] grid = []
+boardToState board [] = []
+boardToState (boardHead:boardTail) (gridHead:gridTail) = (boardHead,gridHead) : (boardToState boardTail gridTail)
+
+--
 -- generateGrid
 --
 -- This function consumes three integers (described below) specifying how to

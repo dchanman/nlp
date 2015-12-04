@@ -248,8 +248,27 @@ tests_slideMovesJumpsGenerator = TestList [
 	test_moveGenerator_1
 	]
 
+-------------------------------------------------------------------------------
+-- Test boardToState
+
+test_boardToState_1 = TestCase (assertEqual "Convert board to state"
+	[(W,(0,0)),(W,(0,1))]
+	(boardToState [W,W] [(0,0),(0,1)])
+	)
+
+test_boardToState_2 = TestCase (assertEqual "Convert board to state"
+	[(W,(0,0)),(D,(0,1)),(B,(0,2))]
+	(boardToState [W,D,B] [(0,0),(0,1),(0,2)])
+	)
+
+tests_boardToState = TestList [
+	test_boardToState_1,
+	test_boardToState_2
+	]
+
 main = do
 	runTestTT tests_count_pieces;
 	runTestTT tests_inSomeOrder;
 	runTestTT tests_generateSlidesLeaps;
-	runTestTT tests_slideMovesJumpsGenerator
+	runTestTT tests_slideMovesJumpsGenerator;
+	runTestTT tests_boardToState
