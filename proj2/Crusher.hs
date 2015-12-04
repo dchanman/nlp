@@ -243,6 +243,10 @@ boardToState [] grid = []
 boardToState board [] = []
 boardToState (boardHead:boardTail) (gridHead:gridTail) = (boardHead,gridHead) : (boardToState boardTail gridTail)
 
+stateToBoard :: State -> Board
+stateToBoard state = [x | (x,_) <- state]
+--stateToBoard ((piece,_):stateTail) = piece : (stateToBoard stateTail)
+
 --
 -- generateGrid
 --
@@ -420,9 +424,38 @@ generateLeaps b = [((x1,y1),(x2,y2),(x3,y3)) |
 -- Returns: the list of next boards
 --
 
---generateNewStates :: Board -> [Board] -> Grid -> [Slide] -> [Jump] -> Piece -> [Board]
---generateNewStates board history grid slides jumps player = -- To Be Completed
+generateNewStates :: Board -> [Board] -> Grid -> [Slide] -> [Jump] -> Piece -> [Board]
+generateNewStates board history grid slides jumps player = allPossibleNewBoards where
+		-- convert board into a state so we can apply moves to it
+		boardAsState = (boardToState board grid);
+		-- apply moves to board to retrieve all possible boards
+		allPossibleStates = map (applyMoveToState boardAsState) (moveGenerator boardAsState slides jumps player);
+		-- convert all possible boards back into states so we can check history
+		allPossibleBoards = map stateToBoard allPossibleStates;
+		-- filter by history
+		allPossibleNewBoards = [newBoard | newBoard <- allPossibleBoards, (elem newBoard history) == False]
 
+-- Helper function, retrieves the Piece at a specified Point in a State
+getPieceAtPoint :: State -> Point -> Piece
+getPieceAtPoint [] point = error ("Point " ++ show point ++ " does not exist in the state provided")
+getPieceAtPoint ((piece,statePoint) : stateTail) point
+	| statePoint == point = piece
+	| otherwise = getPieceAtPoint stateTail point
+
+-- Helper function, returns a State with a new Piece at a specified Point
+setPieceAtPoint :: State -> Piece -> Point -> State
+setPieceAtPoint [] _piece point = error ("Point " ++ show point ++ " does not exist in the state provided")
+setPieceAtPoint ((statePiece,statePoint) : stateTail) piece point
+	| statePoint == point = (piece, point) : stateTail
+	| otherwise = (statePiece,statePoint) : (setPieceAtPoint stateTail piece point)
+
+-- Helper function, consumes a State and a Move, produces a new State that
+-- is the result of performing the move in the State
+applyMoveToState ::  State -> Move -> State
+applyMoveToState state (point1,point2) = newState where
+	piece = getPieceAtPoint state point1;
+	transitionState = setPieceAtPoint state piece point2;
+	newState = setPieceAtPoint transitionState D point1
 --
 -- moveGenerator
 --

@@ -266,9 +266,89 @@ tests_boardToState = TestList [
 	test_boardToState_2
 	]
 
+	-------------------------------------------------------------------------------
+	-- Test getPieceAtPoint
+
+test_getPieceAtPoint_1 = TestCase (assertEqual "Get W piece"
+	W
+	(getPieceAtPoint [(W,(1,1)),(B,(2,1))] (1,1))
+	)
+
+test_getPieceAtPoint_2 = TestCase (assertEqual "Get B piece"
+	B
+	(getPieceAtPoint [(W,(1,1)),(B,(2,1))] (2,1))
+	)
+
+test_getPieceAtPoint_3 = TestCase (assertEqual "Get D piece"
+	D
+	(getPieceAtPoint [(W,(1,1)),(D,(3,2)),(B,(2,1))] (3,2))
+	)
+
+test_setPieceAtPoint_1 = TestCase (assertEqual "Set B piece"
+	[(W,(1,1)),(B,(3,2)),(B,(2,1))]
+	(setPieceAtPoint [(W,(1,1)),(D,(3,2)),(B,(2,1))] B (3,2))
+	)
+
+test_setPieceAtPoint_2 = TestCase (assertEqual "Set D piece"
+	[(D,(1,1)),(D,(3,2)),(B,(2,1))]
+	(setPieceAtPoint [(W,(1,1)),(D,(3,2)),(B,(2,1))] D (1,1))
+	)
+
+test_setPieceAtPoint_3 = TestCase (assertEqual "Set W piece"
+	[(W,(1,1)),(D,(3,2)),(W,(2,1))]
+	(setPieceAtPoint [(W,(1,1)),(D,(3,2)),(B,(2,1))] W (2,1))
+	)
+
+test_applyMoveToState = TestCase (assertEqual "Move"
+	[(D,(1,1)),(W,(3,2)),(B,(2,1))]
+	(applyMoveToState [(W,(1,1)),(D,(3,2)),(B,(2,1))] ((1,1),(3,2)))
+	)
+
+tests_getPieceAtPoint = TestList [
+	test_getPieceAtPoint_1,
+	test_getPieceAtPoint_2,
+	test_getPieceAtPoint_3,
+	test_setPieceAtPoint_1,
+	test_setPieceAtPoint_2,
+	test_setPieceAtPoint_3,
+	test_applyMoveToState
+	]
+
+sampleMiniGrid = [(-2,0),(0,0),(2,0)]
+test_generateNewStates_1 = TestCase (assertEqual "Generate New States"
+	[(sTrToBoard "-W-")]
+	(generateNewStates
+		(sTrToBoard "W--") -- the current state
+		[] -- history
+		sampleMiniGrid -- grid
+		(generateSlides sampleMiniGrid) -- slides
+		(generateLeaps sampleMiniGrid) -- jumps
+		W -- the player
+		)
+	)
+
+test_generateNewStates_2 = TestCase (assertEqual "Generate New States, filter history"
+	[]
+	(generateNewStates
+		(sTrToBoard "W--") -- the current state
+		[(sTrToBoard "-W-")] -- history
+		sampleMiniGrid -- grid
+		(generateSlides sampleMiniGrid) -- slides
+		(generateLeaps sampleMiniGrid) -- jumps
+		W -- the player
+		)
+	)
+
+tests_generateNewStates = TestList [
+	test_generateNewStates_1,
+	test_generateNewStates_2
+	]
+
 main = do
 	runTestTT tests_count_pieces;
 	runTestTT tests_inSomeOrder;
 	runTestTT tests_generateSlidesLeaps;
 	runTestTT tests_slideMovesJumpsGenerator;
-	runTestTT tests_boardToState
+	runTestTT tests_boardToState;
+	runTestTT tests_getPieceAtPoint;
+	runTestTT tests_generateNewStates
