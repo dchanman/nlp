@@ -177,6 +177,11 @@ type Move = (Point,Point)
 
 --gameOver :: Board -> [Board] -> Int -> Bool
 --gameOver board history n = -- To Be Completed
+--	| any board history = True
+--	| (playerCounter W board) < n = True
+--	| (playerCounter B board) < n = True
+--	| otherwise = False
+
 
 --
 -- sTrToBoard
@@ -367,6 +372,11 @@ generateLeaps b = [((x1,y1),(x2,y2),(x3,y3)) |
 
 --generateTree :: Board -> [Board] -> Grid -> [Slide] -> [Jump] -> Piece -> Int -> Int -> BoardTree
 --generateTree board history grid slides jumps player depth n = -- To Be Completed
+--		| depth == Node (depth-depth) (board) (generateTree_helper (board) (history) (grid) (slides) (jumps) (player) (depth-depth+1) depth (n))
+--
+--
+-- generateTree_helper :: Board -> [Board] -> Grid -> [Slide] -> [Jump] -> Piece -> Int -> Int -> Int -> [BoardTree]
+-- generateTree_helper board history grid slides jumps player curdepth depth n 
 
 --
 -- generateNewStates
