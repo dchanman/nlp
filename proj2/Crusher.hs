@@ -223,6 +223,8 @@ sTrToBoard s = map (\ x -> check x) s
 boardToStr :: Board -> String
 boardToStr b = map (\ x -> check x) b
 	where 
+		check W = 'W'
+		check B = 'B'
 		check D = '-'
 
 --
