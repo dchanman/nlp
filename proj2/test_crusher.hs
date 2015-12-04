@@ -109,7 +109,147 @@ tests_generateSlidesLeaps = TestList [
 	TestLabel "Generate Leaps" test_generateLeaps_all
 	]
 
+-------------------------------------------------------------------------------
+-- Test slideMoves, jumpMoves, moveGenerator
+
+test_slideMoves_1 = TestCase (assertBool "Cannot slide over friends"
+	(helper_listsContainSameUniqueMembers
+		[] -- Expected outcome
+		(slideMoves
+		[(W,(0,0)), (W,(0,2))] -- The state
+		[((0,0),(0,2)), ((0,2),(0,0))] -- The legal moves
+		W) -- The player
+		)
+	)
+
+test_slideMoves_2 = TestCase (assertBool "Cannot slide over enemies"
+	(helper_listsContainSameUniqueMembers
+		[] -- Expected outcome
+		(slideMoves
+		[(W,(0,0)), (B,(0,2))] -- The state
+		[((0,0),(0,2)), ((0,2),(0,0))] -- The legal moves
+		W) -- The player
+		)
+	)
+
+test_slideMoves_3 = TestCase (assertBool "Slide into empty is possible"
+	(helper_listsContainSameUniqueMembers
+		[((0,0),(0,2))] -- Expected outcome
+		(slideMoves
+			[(W,(0,0)), (D,(0,2))] -- The state
+			[((0,0),(0,2)), ((0,2),(0,0))] -- The legal moves
+			W) -- The player
+		)
+	)
+
+test_slideMoves_4 = TestCase (assertBool "Multiple moves possible"
+	(helper_listsContainSameUniqueMembers
+		[((0,0),(0,2)), ((0,4),(0,2))] -- Expected outcome
+		(slideMoves
+			[(W,(0,0)), (D,(0,2)), (W,(0,4))] -- The state
+			[((0,0),(0,2)), ((0,2),(0,0)), ((0,2),(0,4)), ((0,4),(0,2))] -- The legal moves
+			W) -- The player
+		)
+	)
+
+test_slideMoves_5 = TestCase (assertBool "Multiple player pieces, only one slide possible"
+	(helper_listsContainSameUniqueMembers
+		[((0,2),(0,4))] -- Expected outcome
+		(slideMoves
+			[(W,(0,0)), (W,(0,2)), (D,(0,4))] -- The state
+			[((0,0),(0,2)), ((0,2),(0,0)), ((0,2),(0,4)), ((0,4),(0,2))] -- The legal moves
+			W) -- The player
+		)
+	)
+
+test_jumpMoves_1 = TestCase (assertBool "Need friends to jump"
+	(helper_listsContainSameUniqueMembers
+		[] -- Expected outcome
+		(jumpMoves
+			[(W,(0,0)), (D,(0,2)), (D,(0,4))] -- The state
+			[((0,0),(0,2),(0,4)), ((0,4),(0,2),(0,0))] -- The legal moves
+			W) -- The player
+		)
+	)
+
+test_jumpMoves_2 = TestCase (assertBool "Can't jump over enemies"
+	(helper_listsContainSameUniqueMembers
+		[] -- Expected outcome
+		(jumpMoves
+			[(W,(0,0)), (B,(0,2)), (D,(0,4))] -- The state
+			[((0,0),(0,2),(0,4)), ((0,4),(0,2),(0,0))] -- The legal moves
+			W) -- The player
+		)
+	)
+
+test_jumpMoves_3 = TestCase (assertBool "Can't squish friends"
+	(helper_listsContainSameUniqueMembers
+		[] -- Expected outcome
+		(jumpMoves
+			[(W,(0,0)), (W,(0,2)), (W,(0,4))] -- The state
+			[((0,0),(0,2),(0,4)), ((0,4),(0,2),(0,0))] -- The legal moves
+			W) -- The player
+		)
+	)
+
+test_jumpMoves_4 = TestCase (assertBool "Can jump to empty"
+	(helper_listsContainSameUniqueMembers
+		[((0,0),(0,4))] -- Expected outcome
+		(jumpMoves
+			[(W,(0,0)), (W,(0,2)), (D,(0,4))] -- The state
+			[((0,0),(0,2),(0,4)), ((0,4),(0,2),(0,0))] -- The legal moves
+			W) -- The player
+		)
+	)
+
+test_jumpMoves_5 = TestCase (assertBool "CRUSH"
+	(helper_listsContainSameUniqueMembers
+		[((0,0),(0,4))] -- Expected outcome
+		(jumpMoves
+			[(W,(0,0)), (W,(0,2)), (B,(0,4))] -- The state
+			[((0,0),(0,2),(0,4)), ((0,4),(0,2),(0,0))] -- The legal moves
+			W) -- The player
+		)
+	)
+
+test_jumpMoves_6 = TestCase (assertBool "Multiple CRUSH options"
+	(helper_listsContainSameUniqueMembers
+		[((0,0),(0,4)), ((0,8),(0,4))] -- Expected outcome
+		(jumpMoves
+			[(W,(0,0)), (W,(0,2)), (B,(0,4)), (W,(0,6)), (W,(0,8))] -- The state
+			[((0,0),(0,2),(0,4)), ((0,4),(0,2),(0,0)), ((0,8),(0,6),(0,4)), ((0,4),(0,6),(0,8))] -- The legal moves
+			W) -- The player
+		)
+	)
+
+test_moveGenerator_1 = TestCase (assertBool "Slide and jump"
+	(helper_listsContainSameUniqueMembers
+		[((0,2),(0,0)), ((0,2),(0,6)), ((0,4),(0,0))] -- Expected outcome
+		(moveGenerator
+			[(D,(0,0)), (W,(0,2)), (W,(0,4)), (B,(0,6))] -- The state
+			[((0,0),(0,2)),((0,2),(0,0)),((0,2),(0,4)),((0,4),(0,2)),((0,4),(0,6)),((0,6),(0,4))] -- The legal slides
+			[((0,0),(0,2),(0,4)),((0,4),(0,2),(0,0)),((0,2),(0,4),(0,6)),((0,6),(0,4),(0,2))] -- The legal jumps
+			W) -- The player
+		)
+	)
+
+tests_slideMovesJumpsGenerator = TestList [
+	test_slideMoves_1,
+	test_slideMoves_2,
+	test_slideMoves_3,
+	test_slideMoves_4,
+	test_slideMoves_5,
+	test_jumpMoves_1,
+	test_jumpMoves_2,
+	test_jumpMoves_3,
+	test_jumpMoves_4,
+	test_jumpMoves_5,
+	test_jumpMoves_6,
+	test_moveGenerator_1
+	]
+
 main = do
 	runTestTT tests_count_pieces;
 	runTestTT tests_inSomeOrder;
-	runTestTT tests_generateSlidesLeaps
+	runTestTT tests_generateSlidesLeaps;
+	runTestTT tests_slideMovesJumpsGenerator

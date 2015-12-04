@@ -65,7 +65,7 @@ type State = [Tile]
 --
 -- Next is a data representation for storing and passing around information within
 -- the tree generating function, allowing it to correctly generate new children
--- 
+--
 -- Next consists of 4 elements
 -- where usedDepth is an integer reprsenting the current depth level
 --		 newBoard is the next board to add to the tree
@@ -76,7 +76,7 @@ type State = [Tile]
 data Next a = Next {usedDepth :: Int, newBoard :: a, seenBoards :: [a], cplayer :: Piece}
 
 --
--- Tree is a data representation for the search tree, it is an extention of 
+-- Tree is a data representation for the search tree, it is an extention of
 -- the rose tree widely used for implementing such unequally branched search trees
 --
 -- Tree consists of 3 elements
@@ -127,7 +127,7 @@ type Jump = (Point,Point,Point)
 type Move = (Point,Point)
 
 --
--- Some test results to see what functions are producing 
+-- Some test results to see what functions are producing
 --
 --run = crusher ["W------------BB-BBB","----W--------BB-BBB","-W-----------BB-BBB"] 'W' 2 3
 --grid0 = generateGrid 3 2 4 []
@@ -141,8 +141,8 @@ type Move = (Point,Point)
 --
 -- crusher
 --
--- This function consumes a list of boards, a player, the depth of 
--- search tree, the size of the provide boards, and produces the 
+-- This function consumes a list of boards, a player, the depth of
+-- search tree, the size of the provide boards, and produces the
 -- next best board possible for the provided player, and accordingly
 -- makes the move and returns new board consed onto the list of boards
 --
@@ -271,12 +271,6 @@ generateGrid n1 n2 n3 acc
 --
 -- Returns: the list of all Slides possible on the given grid
 --
-
---
---					 (-1,-1)   ( 1,-1)
---               (-2, 0)  ( 0, 0)  ( 2, 0)
---                   (-1, 1)   ( 1, 1)
---	generateSlides [(-1,-1),(1,-1),(-2,0),(0,0),(2,0),(-1,1),(1,1)]
 
 generateSlides :: Grid -> [Slide]
 generateSlides b = [((x1,y1),(x2,y2)) |
@@ -423,8 +417,49 @@ generateLeaps b = [((x1,y1),(x2,y2),(x3,y3)) |
 -- Returns: the list of all valid moves that the player could make
 --
 
---moveGenerator :: State -> [Slide] -> [Jump] -> Piece -> [Move]
---moveGenerator state slides jumps player = -- To Be Completed										 
+-- Helper function to help merge two lists
+merge :: [a] -> [a] -> [a]
+merge [] ys = ys
+merge (x:xs) ys = x : merge xs ys
+
+-- Helper function to generate slide moves
+slideMoves :: State -> [Slide] -> Piece -> [Move]
+slideMoves state slides player = [(orig_point, dest_point) |
+	-- orig_points are the points occupied by the player's pieces
+	(piece, orig_point) <- state,
+	piece == player,
+
+	-- dest_points are unoccupied
+	(empty, dest_point) <- state,
+	empty == D,
+
+	-- orig_point and dest_points must be reachable by a slide
+	elem (orig_point, dest_point) slides
+	]
+
+-- Helper function to generate jump moves
+jumpMoves :: State -> [Jump] -> Piece -> [Move]
+jumpMoves state jumps player = [(orig_point, dest_point) |
+	-- orig_points are points occupied by the player's pieces
+	(piece, orig_point) <- state,
+	piece == player,
+
+	-- second_points must be allies
+	(ally, second_point) <- state,
+	ally == player,
+	orig_point /= second_point,
+
+	-- don't crush friends
+	(target, dest_point) <- state,
+	target /= player,
+
+	-- make sure its a legal jump
+	elem (orig_point, second_point, dest_point) jumps
+	]
+
+moveGenerator :: State -> [Slide] -> [Jump] -> Piece -> [Move]
+moveGenerator state slides jumps player =
+	merge (slideMoves state slides player) (jumpMoves state jumps player)
 
 --
 -- boardEvaluator
