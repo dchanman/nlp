@@ -398,11 +398,11 @@ generateLeaps b = [((x1,y1),(x2,y2),(x3,y3)) |
 
 --generateTree :: Board -> [Board] -> Grid -> [Slide] -> [Jump] -> Piece -> Int -> Int -> BoardTree
 --generateTree board history grid slides jumps player depth n = -- To Be Completed
---		| depth == Node (depth-depth) (board) (generateTree_helper (board) (history) (grid) (slides) (jumps) (player) (depth-depth+1) depth (n))
---
---
--- generateTree_helper :: Board -> [Board] -> Grid -> [Slide] -> [Jump] -> Piece -> Int -> Int -> Int -> [BoardTree]
--- generateTree_helper board history grid slides jumps player curdepth depth n 
+--		| depth == 0 = Node depth board ([])
+--		| gameOver board history n = (Node depth board [])
+--		| otherwise = (Node depth board (generateTree board board:history grid slides jumps player (depth - 1) n))
+
+
 
 --
 -- generateNewStates
