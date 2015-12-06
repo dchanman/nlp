@@ -1,7 +1,10 @@
 module Crusher where
 
 -- CPSC 312 - Project 2
--- by Khurram Ali Jaffery
+-- Team Members:
+-- 	Nikhil Agarwal 53835138 x0a9
+-- 	Derek Chan 33184128 o6z8
+-- 	Christopher Chou 35592120 q5o8
 
 -- Main Components:
 -- minimax algorithm
