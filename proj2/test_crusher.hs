@@ -577,7 +577,7 @@ tests_gameOver = TestList [
 	test_gameOver_8,
 	test_gameOver_9
 	]
-	
+
 test_generateTree_1 = TestCase (assertEqual "Gen Simple Tree (0 depth)"
 	-- Expected Output
 	(Node 0 (sTrToBoard "-W-") [])
@@ -593,7 +593,7 @@ test_generateTree_1 = TestCase (assertEqual "Gen Simple Tree (0 depth)"
 		1 -- "size" of the dimensions of the board
 		)
 	)
-	
+
 test_generateTree_2 = TestCase (assertEqual "Gen Simple Tree (1 depth)"
 	-- Expected Output
 	(Node 1 (sTrToBoard "-WB") -- Tree root
@@ -613,14 +613,14 @@ test_generateTree_2 = TestCase (assertEqual "Gen Simple Tree (1 depth)"
 		1 -- "size" of the dimensions of the board
 		)
 	)
-	
+
 test_generateTree_3 = TestCase (assertEqual "Gen Simple Tree (2 depth)"
 	-- Expected Output
-	(Node 1 (sTrToBoard "-WB") -- Tree root
-		[
-			(Node 0 (sTrToBoard "W-B") []) -- Tree leaves
-			]
-		)
+	(Node 2 (sTrToBoard "-WB") [-- Tree root
+		(Node 1 (sTrToBoard "W-B") [ -- Tree leaves
+			(Node 0 (sTrToBoard "WB-") []) -- Tree leaves
+			])
+		])
 	-- Actual Output
 	(generateTree
 		(sTrToBoard "-WB") -- board
@@ -633,13 +633,33 @@ test_generateTree_3 = TestCase (assertEqual "Gen Simple Tree (2 depth)"
 		1 -- "size" of the dimensions of the board
 		)
 	)
-	
+
+test_generateTree_4 = TestCase (assertEqual "Gen Simple Tree (3 depth, end with game over)"
+	-- Expected Output
+	(Node 3 (sTrToBoard "-WB") [-- Tree root
+		(Node 2 (sTrToBoard "W-B") [ -- Tree leaves
+		 	(Node 1 (sTrToBoard "WB-") [])  -- Tree leaves				
+			])
+		])
+	-- Actual Output
+	(generateTree
+		(sTrToBoard "-WB") -- board
+		[] -- history
+		sampleMiniGrid -- Grid
+		(generateSlides sampleMiniGrid) -- slides
+		(generateLeaps sampleMiniGrid) -- jumps
+		W -- player
+		3 -- depth
+		1 -- "size" of the dimensions of the board
+		)
+	)
+
 tests_generateTree = TestList [
 	test_generateTree_1,
 	test_generateTree_2,
-	test_generateTree_3
+	test_generateTree_3,
+	test_generateTree_4
 	]
-
 
 test_minimax_1 = TestCase (assertEqual "1 Depth Tree" 
 	(sTrToBoard "W--")  -- Expected Output
