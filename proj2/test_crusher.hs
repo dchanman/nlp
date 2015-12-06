@@ -577,6 +577,48 @@ tests_gameOver = TestList [
 	test_gameOver_8,
 	test_gameOver_9
 	]
+	
+test_generateTree_1 = TestCase (assertEqual "Gen Simple Tree (0 depth)"
+	-- Expected Output
+	(Node 0 (sTrToBoard "-W-") [])
+	-- Actual Output
+	(generateTree
+		(sTrToBoard "-W-") -- board
+		[] -- history
+		sampleMiniGrid -- Grid
+		(generateSlides sampleMiniGrid) -- slides
+		(generateLeaps sampleMiniGrid) -- jumps
+		W -- player
+		0 -- depth
+		1 -- "size" of the dimensions of the board
+		)
+	)
+	
+test_generateTree_2 = TestCase (assertEqual "Gen Simple Tree (1 depth)"
+	-- Expected Output
+	(Node 1 (sTrToBoard "-W-") -- Tree root
+		[
+			(Node 0 (sTrToBoard "W--") []), -- Tree leaves
+			(Node 0 (sTrToBoard "--W") []) -- Tree leaves
+			]
+		)
+	-- Actual Output
+	(generateTree
+		(sTrToBoard "-W-") -- board
+		[] -- history
+		sampleMiniGrid -- Grid
+		(generateSlides sampleMiniGrid) -- slides
+		(generateLeaps sampleMiniGrid) -- jumps
+		W -- player
+		1 -- depth
+		1 -- "size" of the dimensions of the board
+		)
+	)
+	
+tests_generateTree = TestList [
+	test_generateTree_1,
+	test_generateTree_2
+	]
 
 main = do
 	runTestTT tests_count_pieces;
@@ -586,4 +628,5 @@ main = do
 	runTestTT tests_boardToState;
 	runTestTT tests_getPieceAtPoint;
 	runTestTT tests_generateNewStates;
-	runTestTT tests_gameOver
+	runTestTT tests_gameOver;
+	runTestTT tests_generateTree

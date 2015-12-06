@@ -85,7 +85,7 @@ data Next a = Next {usedDepth :: Int, newBoard :: a, seenBoards :: [a], cplayer 
 -- 		 nextBoards are the child nodes of the current node
 --
 
-data Tree a = Node {depth :: Int, board :: a, nextBoards :: [Tree a]} deriving (Show)
+data Tree a = Node {depth :: Int, board :: a, nextBoards :: [Tree a]} deriving (Show, Eq)
 
 --
 -- BoardTree is the internal representation of the search tree of the given board
@@ -369,10 +369,10 @@ generateLeaps b = [((x1,y1),(x2,y2),(x3,y3)) |
 --
 
 --stateSearch :: Board -> [Board] -> Grid -> [Slide] -> [Jump] -> Piece -> Int -> Int -> Board
---stateSearch board history grid slides jumps player depth num = -- To Be Completed
- gameOver board history n = board
- depth == 0 = board
- otherwise = minimax (generateTree board history grid slides jumps player depth n) (boardEvaluator player history n)
+--stateSearch board history grid slides jumps player depth n -- To Be Completed
+--	| gameOver board history n = board
+--	| depth == 0 = board
+--	| otherwise = minimax (generateTree board history grid slides jumps player depth n) (boardEvaluator player history n)
 
 
 --
@@ -396,13 +396,11 @@ generateLeaps b = [((x1,y1),(x2,y2),(x3,y3)) |
 -- Returns: the corresponding BoardTree generated till specified depth
 --
 
---generateTree :: Board -> [Board] -> Grid -> [Slide] -> [Jump] -> Piece -> Int -> Int -> BoardTree
---generateTree board history grid slides jumps player depth n = -- To Be Completed
---		| depth == 0 = Node depth board ([])
---		| gameOver board history n = (Node depth board [])
---		| otherwise = (Node depth board (generateTree board board:history grid slides jumps player (depth - 1) n))
-
-
+generateTree :: Board -> [Board] -> Grid -> [Slide] -> [Jump] -> Piece -> Int -> Int -> BoardTree
+generateTree board history grid slides jumps player depth n
+		| depth == 0 = Node depth board ([])
+		| gameOver board history n = (Node depth board [])
+		| otherwise = (Node depth board [(generateTree board (board:history) grid slides jumps player (depth - 1) n)])
 
 --
 -- generateNewStates
