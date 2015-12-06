@@ -403,7 +403,7 @@ generateTree board history grid slides jumps player depth n
 		| otherwise = Node depth board Trees
 		where
 			nextBoard = generateNewStates board history grid slides jumps player
-			nextTrees = (generateTree board (board:history) grid slides jumps player (depth - 1) n)
+			nextTrees board = generateTree board (board:history) grid slides jumps player (depth - 1) n
 			Trees = map nextTrees nextBoard
 --
 -- generateNewStates
