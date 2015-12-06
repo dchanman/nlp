@@ -620,6 +620,82 @@ tests_generateTree = TestList [
 	test_generateTree_2
 	]
 
+
+test_minimax_1 = TestCase (assertEqual "1 Depth Tree" 
+	(sTrToBoard "W--")  -- Expected Output
+    (minimax            -- Actual Output
+    	(Node 1 (sTrToBoard "-W-") -- Tree root
+		[
+			(Node 0 (sTrToBoard "W--") []), -- Tree leaves
+			(Node 0 (sTrToBoard "--W") [])  -- Tree leaves
+	    ])
+	 	(boardEvaluator W [] 1))
+    )
+
+grid0 = generateGrid 3 2 4 []
+test_minimax_2 = TestCase (assertEqual "2 Depth Tree"
+	(sTrToBoard "WW--B----B--B------")  -- Expected Output
+	(minimax 
+		(generateTree 
+			(sTrToBoard "WW--W----B--B-B----")
+			[] 
+			grid0
+			(generateSlides grid0)
+			(generateLeaps grid0)
+			B
+			3
+			3
+		)
+		(boardEvaluator B [] 3))
+	)
+
+-- This is the example given in the problem description 
+test_minimax_3 = TestCase (assertEqual "2 Depth Tree"      
+	(sTrToBoard "WW--B----B--B------")  -- Expected Output
+	(minimax 
+		(Node 1 (sTrToBoard "WW--W----B--B-B----") -- Tree root
+		[
+			(Node 0 (sTrToBoard "WW--W--B-B----B----") []),  -- Tree leaves
+			(Node 0 (sTrToBoard "WW--B----B--B------") []),  -- Tree leaves
+			(Node 0 (sTrToBoard "WW--W-------B-B---B") []),  -- Tree leaves
+			(Node 0 (sTrToBoard "WW--W----BB-B------") []),  -- Tree leaves
+			(Node 0 (sTrToBoard "WW--W----B--BB-----") [])   -- Tree leaves
+	    ])
+		(boardEvaluator B [] 3))
+	)
+
+-- This is also the example given in the problem description 
+test_minimax_4 = TestCase (assertEqual "3 Depth Tree"      
+	(sTrToBoard "WW--B----B--B------")  -- Expected Output
+	(minimax 
+		(Node 2 (sTrToBoard "WW--W----B--B-B----") -- Tree root
+		[
+			(Node 1 (sTrToBoard "WW--W--B-B----B----")
+				[
+					(Node 0 (sTrToBoard "-W-WW--B-B----B----") []),  -- Tree leaves
+					(Node 0 (sTrToBoard "-W--W--B-W----B----") [])   -- Tree leaves
+				]),  
+			(Node 1 (sTrToBoard "WW--B----B--B------") 
+				[
+					(Node 0 (sTrToBoard "W-W-B----B--B------") []),  -- Tree leaves
+					(Node 0 (sTrToBoard "-W-WB----B--B------") [])   -- Tree leaves
+				]),  
+			(Node 1 (sTrToBoard "WW--W-------B-B---B") 
+				[
+					(Node 0 (sTrToBoard "W-W-W-------B-B---B") []),  -- Tree leaves
+					(Node 0 (sTrToBoard "-W--W----W--B-B---B") [])   -- Tree leaves
+				])
+	    ])
+		(boardEvaluator B [] 3))
+	)
+
+tests_minimax = TestList [
+	test_minimax_1,
+	test_minimax_2,
+	test_minimax_3,
+	test_minimax_4
+	]
+	
 main = do
 	runTestTT tests_count_pieces;
 	runTestTT tests_inSomeOrder;
