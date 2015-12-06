@@ -132,14 +132,14 @@ type Move = (Point,Point)
 --
 -- Some test results to see what functions are producing
 --
---run = crusher ["W------------BB-BBB","----W--------BB-BBB","-W-----------BB-BBB"] 'W' 2 3
---grid0 = generateGrid 3 2 4 []
---slides0 = generateSlides grid0 3
---jumps0 = generateLeaps grid0 3
---board0 = sTrToBoard "WWW-WW-------BB-BBB"
---newBoards0 = generateNewStates board0 [] grid0 slides0 jumps0 W
---tree0 = generateTree board0 [] grid0 slides0 jumps0 W 4 3
---heuristic0 = boardEvaluator W [] 3
+run = crusher ["WWWWW--------BB-BBB","----W--------BB-BBB","-W-----------BB-BBB"] 'W' 2 3
+crusher_grid0 = generateGrid 3 2 4 []
+crusher_slides0 = generateSlides crusher_grid0
+crusher_jumps0 = generateLeaps crusher_grid0
+crusher_board0 = sTrToBoard "WWW-WW-------BB-BBB"
+crusher_newBoards0 = generateNewStates crusher_board0 [] crusher_grid0 crusher_slides0 crusher_jumps0 W
+crusher_tree0 = generateTree crusher_board0 [] crusher_grid0 crusher_slides0 crusher_jumps0 W 4 3
+crusher_heuristic0 = boardEvaluator W [] 3
 
 
 --
