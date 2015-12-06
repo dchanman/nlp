@@ -158,7 +158,15 @@ type Move = (Point,Point)
 
 --crusher :: [String] -> Char -> Int -> Int -> [String]
 --crusher (current:old) p d n = -- To Be Completed
-
+-- (boardToStr nextBoard):(current:old)
+-- where
+--		board = strToBoard current
+--   	history = map strToBoard old
+--		player = getPlayer p
+--    	grid = generateGrid n
+--   	slides = generateSlides grid
+--    	jumps = generateLeaps grid
+--   	nextBoard = stateSearch board history grid slides jumps p d n
 --
 -- gameOver
 --
