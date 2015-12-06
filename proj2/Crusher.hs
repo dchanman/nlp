@@ -160,13 +160,13 @@ type Move = (Point,Point)
 crusher :: [String] -> Char -> Int -> Int -> [String]
 crusher (current:old) p d n = (boardToStr nextBoard):(current:old)
 	where 
-		board = strToBoard current
-		history = map strToBoard old
-    	grid = generateGrid n (n - 1) (2 * (n - 1)) []
-  		slides = generateSlides grid
-  		jumps = generateLeaps grid
-  		player = getPlayer p
-  	    nextBoard = stateSearch board history grid slides jumps player d n
+		board = sTrToBoard current
+		history = map sTrToBoard old
+		grid = generateGrid n (n - 1) (2 * (n - 1)) []
+		slides = generateSlides grid
+		jumps = generateLeaps grid
+		player = getPlayer p
+		nextBoard = stateSearch board history grid slides jumps player d n
 
 -- Helper function for crusher to change type of player input from Char to Piece
 getPlayer :: Char -> Piece
