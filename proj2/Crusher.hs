@@ -420,11 +420,11 @@ generateTree :: Board -> [Board] -> Grid -> [Slide] -> [Jump] -> Piece -> Int ->
 generateTree board history grid slides jumps player depth n
 		| depth == 0 = Node depth board [] --terminating condition is when depth == 0
 		| gameOver board history n = (Node depth board [])
-		| otherwise = Node depth board allTrees
+		| otherwise = Node depth board allTrees -- an array of generateTree statements 
 		where
-			nextBoard = generateNewStates board history grid slides jumps player --Generates newStates
+			nextBoard = generateNewStates board history grid slides jumps player --Generates newStates, (leaf nodes) whose children are made of boards from generateNewstates, which have children from generateNewStates, etc.
 			nextTrees new_board = generateTree new_board (board:history) grid slides jumps player (depth - 1) n  --Gets new trees using history of previous board. 
-			allTrees = map nextTrees nextBoard
+			allTrees = map nextTrees nextBoard --map them together
 --
 -- generateNewStates
 --
