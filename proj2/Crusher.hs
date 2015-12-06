@@ -564,26 +564,25 @@ moveGenerator state slides jumps player =
 boardEvaluator :: Piece -> [Board] -> Int -> Board -> Bool -> Int
 boardEvaluator player history n board myTurn = abs((playerCounter player board) - (playerCounter (negatePlayer player) board));
 
--- I wrote this helper to help with the above code.
--- It just take the current player and returns the other player (aka opponent)
+-- Takes in a player and returns the opposite color, i.e. Black->White and White->Black
 negatePlayer :: Piece -> Piece
 negatePlayer player
 	| player == W = B
 	| player == B = W
 
--- Helper function for counting number of W or B in a list
+-- This call countPiecesW or B to count the pieces on the board 
 playerCounter :: Piece -> Board -> Int
 playerCounter player board
 	| player == W 	= countPiecesW board 0
 	| player == B	= countPiecesB board 0
 	
-	
+-- This counts white pieces on the board.	
 countPiecesW :: Board -> Int -> Int
 countPiecesW board acc 
 	| null board			= acc			
 	| (head board) == W		= countPiecesW (tail board) (acc + 1)
 	| otherwise 			= countPiecesW (tail board) acc
-	
+-- This counts the Black pieces on the board	
 countPiecesB :: Board -> Int -> Int
 countPiecesB board acc 
 	| null board			= acc			
