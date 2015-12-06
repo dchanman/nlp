@@ -413,7 +413,7 @@ stateSearch board history grid slides jumps player depth n -- To Be Completed
 
 generateTree :: Board -> [Board] -> Grid -> [Slide] -> [Jump] -> Piece -> Int -> Int -> BoardTree
 generateTree board history grid slides jumps player depth n
-		| depth == 0 = Node depth board ([])
+		| depth == 0 = Node depth board []
 		| gameOver board history n = (Node depth board [])
 		| otherwise = Node depth board allTrees
 		where
