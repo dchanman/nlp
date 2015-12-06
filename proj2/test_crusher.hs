@@ -467,6 +467,117 @@ tests_generateNewStates = TestList [
 	test_generateNewStates_8
 	]
 
+test_gameOver_1 = TestCase (assertEqual "Game not over"
+	-- Expected Output
+	False
+	-- Actual Output
+	(gameOver
+		(sTrToBoard "WWW-BBB") -- board
+		[] -- history
+		2 -- player
+		)
+	)
+
+test_gameOver_2 = TestCase (assertEqual "Board repeated"
+	-- Expected Output
+	True
+	-- Actual Output
+	(gameOver
+		(sTrToBoard "WWW-BBB") -- board
+		[(sTrToBoard "WWW-BBB")] -- history
+		2 -- player
+		)
+	)
+
+test_gameOver_3 = TestCase (assertEqual "Board repeated"
+	-- Expected Output
+	True
+	-- Actual Output
+	(gameOver
+		(sTrToBoard "WWW-BBB") -- board
+		[(sTrToBoard "WWW-BBB"),(sTrToBoard "WW-WBBB")] -- history
+		2 -- player
+		)
+	)
+
+test_gameOver_4 = TestCase (assertEqual "Board repeated"
+	-- Expected Output
+	True
+	-- Actual Output
+	(gameOver
+		(sTrToBoard "WWW-BBB") -- board
+		[(sTrToBoard "WWWB-BB"),(sTrToBoard "WWW-BBB"),(sTrToBoard "WW-WBBB")] -- history
+		2 -- player
+		)
+	)
+
+test_gameOver_5 = TestCase (assertEqual "White close to losing, but still in the game"
+	-- Expected Output
+	False
+	-- Actual Output
+	(gameOver
+		(sTrToBoard "WW--BBB") -- board
+		[] -- history
+		2 -- player
+		)
+	)
+
+test_gameOver_6 = TestCase (assertEqual "Black close to losing, but still in the game"
+	-- Expected Output
+	False
+	-- Actual Output
+	(gameOver
+		(sTrToBoard "WWW--BB") -- board
+		[] -- history
+		2 -- player
+		)
+	)
+
+test_gameOver_7 = TestCase (assertEqual "White and black both close to losing, but still in the game"
+	-- Expected Output
+	False
+	-- Actual Output
+	(gameOver
+		(sTrToBoard "W-W--BB") -- board
+		[] -- history
+		2 -- player
+		)
+	)
+
+test_gameOver_8 = TestCase (assertEqual "White lost"
+	-- Expected Output
+	True
+	-- Actual Output
+	(gameOver
+		(sTrToBoard "W----BB") -- board
+		[] -- history
+		2 -- player
+		)
+	)
+
+test_gameOver_9 = TestCase (assertEqual "Black lost"
+	-- Expected Output
+	True
+	-- Actual Output
+	(gameOver
+		(sTrToBoard "W-W---B") -- board
+		[] -- history
+		2 -- player
+		)
+	)
+
+tests_gameOver = TestList [
+	test_gameOver_1,
+	test_gameOver_2,
+	test_gameOver_3,
+	test_gameOver_4,
+	test_gameOver_5,
+	test_gameOver_6,
+	test_gameOver_7,
+	test_gameOver_8,
+	test_gameOver_9
+	]
+
 main = do
 	runTestTT tests_count_pieces;
 	runTestTT tests_inSomeOrder;
@@ -474,4 +585,5 @@ main = do
 	runTestTT tests_slideMovesJumpsGenerator;
 	runTestTT tests_boardToState;
 	runTestTT tests_getPieceAtPoint;
-	runTestTT tests_generateNewStates
+	runTestTT tests_generateNewStates;
+	runTestTT tests_gameOver

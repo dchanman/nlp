@@ -175,12 +175,12 @@ type Move = (Point,Point)
 -- Returns: True if the board is in a state where the game has ended, otherwise False
 --
 
---gameOver :: Board -> [Board] -> Int -> Bool
---gameOver board history n = -- To Be Completed
---	| any board history = True
---	| (playerCounter W board) < n = True
---	| (playerCounter B board) < n = True
---	| otherwise = False
+gameOver :: Board -> [Board] -> Int -> Bool
+gameOver board history n
+	| elem board history = True
+	| (playerCounter W board) < n = True
+	| (playerCounter B board) < n = True
+	| otherwise = False
 
 
 --
