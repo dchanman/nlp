@@ -138,6 +138,7 @@ type Move = (Point,Point)
 --tree0 = generateTree board0 [] grid0 slides0 jumps0 W 4 3
 --heuristic0 = boardEvaluator W [] 3
 
+
 --
 -- crusher
 --
@@ -156,17 +157,23 @@ type Move = (Point,Point)
 -- Returns: a list of String with the new current board consed onto the front
 --
 
---crusher :: [String] -> Char -> Int -> Int -> [String]
---crusher (current:old) p d n = -- To Be Completed
--- (boardToStr nextBoard):(current:old)
--- where
---		board = strToBoard current
---   	history = map strToBoard old
---		player = getPlayer p
---    	grid = generateGrid n
---   	slides = generateSlides grid
---    	jumps = generateLeaps grid
---   	nextBoard = stateSearch board history grid slides jumps p d n
+crusher :: [String] -> Char -> Int -> Int -> [String]
+crusher (current:old) p d n = (boardToStr nextBoard):(current:old)
+	where 
+		board = strToBoard current
+		history = map strToBoard old
+    	grid = generateGrid n (n - 1) (2 * (n - 1)) []
+  		slides = generateSlides grid
+  		jumps = generateLeaps grid
+  		player = getPlayer p
+  	    nextBoard = stateSearch board history grid slides jumps player d n
+
+-- Helper function for crusher to change type of player input from Char to Piece
+getPlayer :: Char -> Piece
+getPlayer p 
+	| p == 'W'  = W
+	| p == 'B'  = B
+	
 --
 -- gameOver
 --
@@ -604,13 +611,11 @@ minimax :: BoardTree -> (Board -> Bool -> Int) -> Board
 minimax (Node d b children) heuristic = findChild (minimax' (Node d b children) heuristic True) 
    [(board x, heuristic (board x) True) | x <- children]
 
-
 -- A helper function to find the board that corresponds to the correct minimax value reported
 findChild :: Int -> [(Board,Int)] -> Board
 findChild val (t:ts) 
-  | snd t == val  = fst t
-  | otherwise     = findChild val ts
-
+	| snd t == val  = fst t
+	| otherwise     = findChild val ts
 
 --
 -- minimax'
@@ -636,5 +641,5 @@ findChild val (t:ts)
 minimax' :: BoardTree -> (Board -> Bool -> Int) -> Bool -> Int
 minimax' (Node _ b []) heuristic maxPlayer = heuristic b True
 minimax' (Node _ b children) heuristic maxPlayer
-  | maxPlayer  = maximum ([minimax' x heuristic False | x <- children])
-  | otherwise  = minimum ([minimax' x heuristic True | x <- children])
+	| maxPlayer  = maximum ([minimax' x heuristic False | x <- children])
+	| otherwise  = minimum ([minimax' x heuristic True | x <- children])
