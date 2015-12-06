@@ -368,8 +368,8 @@ generateLeaps b = [((x1,y1),(x2,y2),(x3,y3)) |
 --          otherwise produces the next best board
 --
 
---stateSearch :: Board -> [Board] -> Grid -> [Slide] -> [Jump] -> Piece -> Int -> Int -> Board
---stateSearch board history grid slides jumps player depth n -- To Be Completed
+stateSearch :: Board -> [Board] -> Grid -> [Slide] -> [Jump] -> Piece -> Int -> Int -> Board
+stateSearch board history grid slides jumps player depth n -- To Be Completed
 	| gameOver board history n = board
 	| depth == 0 = board
 	| otherwise = minimax (generateTree board history grid slides jumps player depth n) (boardEvaluator player history n)
