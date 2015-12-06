@@ -370,10 +370,9 @@ generateLeaps b = [((x1,y1),(x2,y2),(x3,y3)) |
 
 --stateSearch :: Board -> [Board] -> Grid -> [Slide] -> [Jump] -> Piece -> Int -> Int -> Board
 --stateSearch board history grid slides jumps player depth num = -- To Be Completed
--- | board elem history = board --does this board already exist? 
--- --Missing failure states not sure exactly.
--- | moveGenerator(state jumps slides player) == FALSE = board --produces the next best board
---
+ gameOver board history n = board
+ depth == 0 = board
+ otherwise = minimax (generateTree board history grid slides jumps player depth n) (boardEvaluator player history n)
 
 
 --
