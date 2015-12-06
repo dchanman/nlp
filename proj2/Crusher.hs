@@ -414,14 +414,16 @@ stateSearch board history grid slides jumps player depth n -- To Be Completed
 -- Returns: the corresponding BoardTree generated till specified depth
 --
 
+-- Tree depth is reversed, depth N is the root and depth 0 is the leaf... uh yeah.
+
 generateTree :: Board -> [Board] -> Grid -> [Slide] -> [Jump] -> Piece -> Int -> Int -> BoardTree
 generateTree board history grid slides jumps player depth n
-		| depth == 0 = Node depth board []
+		| depth == 0 = Node depth board [] --terminating condition is when depth == 0
 		| gameOver board history n = (Node depth board [])
 		| otherwise = Node depth board allTrees
 		where
-			nextBoard = generateNewStates board history grid slides jumps player
-			nextTrees new_board = generateTree new_board (board:history) grid slides jumps player (depth - 1) n
+			nextBoard = generateNewStates board history grid slides jumps player --Generates newStates
+			nextTrees new_board = generateTree new_board (board:history) grid slides jumps player (depth - 1) n  --Gets new trees using history of previous board. 
 			allTrees = map nextTrees nextBoard
 --
 -- generateNewStates
