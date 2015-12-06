@@ -585,15 +585,24 @@ countPiecesB board acc
 --
 -- Arguments:
 -- -- (Node _ b children): a BoardTree to apply minimax algorithm on
--- -- heuristic: a paritally evaluated boardEvaluator representing the
+-- -- heuristic: a partially evaluated boardEvaluator representing the
 --				 appropriate heuristic to apply based on the size of the board,
 --				 who the program is playing as, and all the boards already seen
 --
 -- Returns: the next best board
 --
 
---minimax :: BoardTree -> (Board -> Bool -> Int) -> Board
---minimax (Node _ b children) heuristic = -- To Be Completed
+minimax :: BoardTree -> (Board -> Bool -> Int) -> Board
+minimax (Node d b children) heuristic = findChild (minimax' (Node d b children) heuristic True) 
+   [(board x, heuristic (board x) True) | x <- children]
+
+
+-- A helper function to find the board that corresponds to the correct minimax value reported
+findChild :: Int -> [(Board,Int)] -> Board
+findChild val (t:ts) 
+  | snd t == val  = fst t
+  | otherwise     = findChild val ts
+
 
 --
 -- minimax'
@@ -607,7 +616,7 @@ countPiecesB board acc
 -- Arguments:
 -- -- (Node _ b []): a BoardTree
 -- -- (Node _ b children): a BoardTree
--- -- heuristic: a paritally evaluated boardEvaluator representing the
+-- -- heuristic: a partially evaluated boardEvaluator representing the
 --				 appropriate heuristic to apply based on the size of the board,
 --				 who the program is playing as, and all the boards already seen
 -- -- maxPlayer: a Boolean indicating whether the function should be maximizing
@@ -616,5 +625,8 @@ countPiecesB board acc
 -- Returns: the minimax value at the top of the tree
 --
 
---minimax' :: BoardTree -> (Board -> Bool -> Int) -> Bool -> Int
---minimax' boardTree heuristic maxPlayer = -- To Be Completed
+minimax' :: BoardTree -> (Board -> Bool -> Int) -> Bool -> Int
+minimax' (Node _ b []) heuristic maxPlayer = heuristic b True
+minimax' (Node _ b children) heuristic maxPlayer
+  | maxPlayer  = maximum ([minimax' x heuristic False | x <- children])
+  | otherwise  = minimum ([minimax' x heuristic True | x <- children])
